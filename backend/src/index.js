@@ -16,6 +16,16 @@ app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the AI Library API' });
 });
 
+// Database Connection Test Endpoint
+app.get('/api/test-db', async (req, res) => {
+    try {
+        const [rows] = await require('./config/db').query('SELECT COUNT(*) as count FROM books');
+        res.json({ success: true, bookCount: rows[0].count });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
@@ -43,10 +53,11 @@ const PORT = process.env.PORT || 5000;
 (async () => {
     try {
         const connection = await db.getConnection();
-        console.log('✅ MySQL Connected Successfully');
+        const [result] = await connection.query('SELECT 1 AS test');
+        console.log('✅ Database connected successfully. Test query returned:', result[0].test);
         connection.release();
     } catch (error) {
-        console.error('❌ MySQL Connection Failed:', error.message);
+        console.error('❌ Database connection failed with the exact error:', error.message);
     }
 })();
 app.listen(PORT, () => {
