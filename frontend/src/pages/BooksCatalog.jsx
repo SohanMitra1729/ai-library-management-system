@@ -75,13 +75,8 @@ const BooksCatalog = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-10 pointer-events-none mix-blend-luminosity"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
-      ></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 pointer-events-none"></div>
+    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm">
+      {/* Local background removed; relies on MainLayout's global library theme */}
 
       {/* Main Content (Needs relative z-10) */}
       <div className="relative z-10 flex flex-col flex-1">
@@ -165,11 +160,11 @@ const BooksCatalog = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: index * 0.05, duration: 0.3 }}
-                  className="bg-slate-800/30 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden hover:border-teal-500/40 hover:shadow-[0_15px_30px_rgba(20,184,166,0.15)] hover:-translate-y-2 transition-all duration-300 group flex flex-col h-full shadow-sm cursor-pointer"
+                  className="bg-slate-800/40 backdrop-blur-2xl border border-slate-700/50 rounded-3xl overflow-hidden hover:border-teal-500/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:-translate-y-3 transition-all duration-300 group flex flex-col h-full shadow-lg cursor-pointer"
                 >
-                  <div className="h-64 bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center relative overflow-hidden group-hover:from-slate-800 group-hover:to-slate-700 transition-colors">
+                  <div className="h-64 bg-gradient-to-br from-slate-900/80 to-slate-800/80 flex items-center justify-center relative overflow-hidden group-hover:from-slate-800/90 group-hover:to-slate-700/90 transition-colors border-b border-slate-700/30">
                     {/* Real Book Cover Graphic */}
-                    <div className="w-40 h-56 rounded-r-xl border-l-[6px] border-slate-900 shadow-[10px_10px_20px_rgba(0,0,0,0.5)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-[1.05] transition-all duration-500 relative overflow-hidden bg-slate-900">
+                    <div className="w-40 h-56 rounded-r-xl border-l-[6px] border-slate-900 shadow-[15px_15px_30px_rgba(0,0,0,0.6)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-110 transition-all duration-500 relative overflow-hidden bg-slate-900">
                       <img 
                         src={getCoverImage(book.category)} 
                         alt={`${book.title} Cover`}

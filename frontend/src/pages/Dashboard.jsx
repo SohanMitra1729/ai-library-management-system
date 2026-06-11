@@ -78,14 +78,8 @@ const Dashboard = () => {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative border border-slate-700/50 rounded-3xl p-10 overflow-hidden shadow-sm"
+        className="relative border border-slate-700/50 rounded-3xl p-10 overflow-hidden shadow-sm bg-slate-900/40 backdrop-blur-md"
       >
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
-        ></div>
-        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40"></div>
         <div className="absolute right-0 top-0 w-64 h-64 bg-teal-500/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
 
         <div className="relative z-10 flex items-center justify-between">

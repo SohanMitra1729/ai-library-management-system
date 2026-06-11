@@ -65,13 +65,8 @@ const MyBooks = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-2xl border border-dark-700/30">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-30 pointer-events-none mix-blend-luminosity"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
-      ></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050810]/80 via-[#050810]/60 to-[#050810]/90 pointer-events-none"></div>
+    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm">
+      {/* Global background handles library theme */}
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col flex-1">
@@ -81,11 +76,11 @@ const MyBooks = () => {
           className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6"
         >
           <div>
-            <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3 drop-shadow-lg">
-              <Library className="text-primary-400 drop-shadow-md" size={36} />
+            <h1 className="text-4xl font-black text-slate-100 mb-2 flex items-center gap-3 tracking-tight">
+              <Library className="text-teal-400" size={36} />
               My Borrowed Books
             </h1>
-            <p className="text-gray-200 text-lg font-medium drop-shadow-md bg-black/20 p-1.5 px-3 rounded-lg inline-block backdrop-blur-sm border border-white/5 mt-2">
+            <p className="text-slate-300 text-lg font-medium bg-slate-800/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-slate-700/50 mt-2">
               Track your current reads and past reading history.
             </p>
           </div>
@@ -105,13 +100,13 @@ const MyBooks = () => {
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }} 
               animate={{ opacity: 1, scale: 1 }} 
-              className="absolute inset-0 flex flex-col justify-center items-center text-center py-16 bg-dark-800/30 backdrop-blur-md rounded-3xl border border-dark-700/50"
+              className="absolute inset-0 flex flex-col justify-center items-center text-center py-16 bg-slate-800/30 backdrop-blur-md rounded-3xl border border-slate-700/50"
             >
-              <div className="w-24 h-24 bg-dark-700/50 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                <Book className="text-gray-500" size={48} />
+              <div className="w-24 h-24 bg-slate-800/50 border border-slate-700/50 rounded-full flex items-center justify-center mb-6 shadow-sm">
+                <Book className="text-slate-400" size={48} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-200 mb-2">No borrowed books found</h3>
-              <p className="text-gray-500 text-lg max-w-md">You haven't borrowed any books yet. Check out the catalog to find your next great read!</p>
+              <h3 className="text-2xl font-bold text-slate-200 mb-2">No borrowed books found</h3>
+              <p className="text-slate-400 text-lg max-w-md">You haven't borrowed any books yet. Check out the catalog to find your next great read!</p>
             </motion.div>
           ) : (
             <motion.div 
@@ -125,11 +120,11 @@ const MyBooks = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: index * 0.05, duration: 0.3 }}
-                    className="bg-[#0a0f1c]/70 backdrop-blur-2xl border border-dark-600/50 rounded-3xl overflow-hidden hover:border-primary-500/60 hover:shadow-[0_15px_40px_rgba(56,189,248,0.25)] hover:-translate-y-2 transition-all duration-300 group flex flex-col h-full shadow-xl"
+                    className="bg-slate-800/40 backdrop-blur-2xl border border-slate-700/50 rounded-3xl overflow-hidden hover:border-teal-500/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:-translate-y-3 transition-all duration-300 group flex flex-col h-full shadow-lg"
                   >
-                    <div className="h-56 bg-gradient-to-br from-dark-900 to-dark-800 flex items-center justify-center relative overflow-hidden group-hover:from-dark-800 group-hover:to-dark-700 transition-colors">
+                    <div className="h-64 bg-gradient-to-br from-slate-900/80 to-slate-800/80 flex items-center justify-center relative overflow-hidden group-hover:from-slate-800/90 group-hover:to-slate-700/90 transition-colors border-b border-slate-700/30">
                       {/* Real Book Cover Graphic */}
-                      <div className="w-36 h-48 rounded-r-lg border-l-[6px] border-dark-900 shadow-[20px_0_30px_rgba(0,0,0,0.8)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-[1.03] transition-all duration-500 relative overflow-hidden bg-dark-900">
+                      <div className="w-40 h-56 rounded-r-xl border-l-[6px] border-slate-900 shadow-[15px_15px_30px_rgba(0,0,0,0.6)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-110 transition-all duration-500 relative overflow-hidden bg-slate-900">
                         <img 
                           src={getCoverImage(book.category)} 
                           alt={`${book.title} Cover`}
@@ -137,7 +132,7 @@ const MyBooks = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                         <div className="absolute bottom-2 left-2 right-2">
-                          <h4 className="text-white text-[10px] font-bold line-clamp-2 leading-tight drop-shadow-md">{book.title}</h4>
+                          <h4 className="text-white text-xs font-bold line-clamp-2 leading-tight drop-shadow-md">{book.title}</h4>
                         </div>
                       </div>
 
@@ -145,35 +140,35 @@ const MyBooks = () => {
                         {getStatusBadge(book.status)}
                       </div>
                       
-                      <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-lg capitalize">
+                      <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold bg-slate-900/50 backdrop-blur-md border border-slate-700/50 text-slate-100 shadow-sm capitalize">
                         {book.category}
                       </div>
                     </div>
                     
-                    <div className="p-6 flex flex-col flex-1">
-                      <h3 className="text-xl font-bold text-white mb-1 line-clamp-1 group-hover:text-primary-400 transition-colors" title={book.title}>
+                    <div className="p-6 flex flex-col flex-1 bg-slate-900/20">
+                      <h3 className="text-xl font-bold text-slate-100 mb-1 line-clamp-1 group-hover:text-teal-400 transition-colors" title={book.title}>
                         {book.title}
                       </h3>
-                      <p className="text-sm font-medium text-gray-400 mb-4">{book.author}</p>
+                      <p className="text-sm font-medium text-slate-400 mb-4">{book.author}</p>
                       
                       <div className="space-y-2 mb-4 mt-auto">
-                        <div className="flex justify-between items-center text-sm border-b border-dark-700/50 pb-2">
-                          <span className="text-gray-500 flex items-center gap-1"><Clock size={14}/> Issue Date</span>
-                          <span className="text-gray-300 font-medium">{new Date(book.issue_date).toLocaleDateString()}</span>
+                        <div className="flex justify-between items-center text-sm border-b border-slate-700/50 pb-2">
+                          <span className="text-slate-500 flex items-center gap-1"><Clock size={14}/> Issue Date</span>
+                          <span className="text-slate-300 font-medium">{new Date(book.issue_date).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm border-b border-dark-700/50 pb-2">
-                          <span className="text-gray-500 flex items-center gap-1"><Clock size={14}/> Due Date</span>
-                          <span className="text-gray-300 font-medium">{new Date(book.due_date).toLocaleDateString()}</span>
+                        <div className="flex justify-between items-center text-sm border-b border-slate-700/50 pb-2">
+                          <span className="text-slate-500 flex items-center gap-1"><Clock size={14}/> Due Date</span>
+                          <span className="text-slate-300 font-medium">{new Date(book.due_date).toLocaleDateString()}</span>
                         </div>
                         {book.return_date && (
-                          <div className="flex justify-between items-center text-sm border-b border-dark-700/50 pb-2">
-                            <span className="text-gray-500 flex items-center gap-1"><CheckCircle2 size={14}/> Return Date</span>
-                            <span className="text-green-400 font-medium">{new Date(book.return_date).toLocaleDateString()}</span>
+                          <div className="flex justify-between items-center text-sm border-b border-slate-700/50 pb-2">
+                            <span className="text-slate-500 flex items-center gap-1"><CheckCircle2 size={14}/> Return Date</span>
+                            <span className="text-teal-400 font-medium">{new Date(book.return_date).toLocaleDateString()}</span>
                           </div>
                         )}
                         <div className="flex justify-between items-center text-sm pt-1">
-                          <span className="text-gray-500 font-medium">Fine Amount</span>
-                          <span className={`font-bold ${book.fine_amount > 0 ? 'text-red-400' : 'text-gray-400'}`}>
+                          <span className="text-slate-500 font-medium">Fine Amount</span>
+                          <span className={`font-bold ${book.fine_amount > 0 ? 'text-red-400' : 'text-slate-400'}`}>
                             ₹{Number(book.fine_amount).toFixed(2)}
                           </span>
                         </div>

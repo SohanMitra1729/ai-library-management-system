@@ -47,42 +47,37 @@ const IssueHistory = () => {
   });
 
   return (
-    <div className="relative max-w-7xl mx-auto h-full flex flex-col p-6 rounded-3xl overflow-hidden shadow-2xl border border-dark-700/30">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-40 pointer-events-none mix-blend-luminosity"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
-      ></div>
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#050810]/90 via-[#050810]/70 to-blue-900/30 pointer-events-none"></div>
+    <div className="relative max-w-7xl mx-auto h-full flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800 bg-slate-900/30 backdrop-blur-sm">
+      {/* Global background handles library theme */}
 
       <div className="relative z-10 flex flex-col flex-1">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white flex items-center gap-3 drop-shadow-lg">
-            <History className="text-primary-400 drop-shadow-md" size={32} />
+          <h1 className="text-3xl font-black text-slate-100 flex items-center gap-3 tracking-tight">
+            <History className="text-teal-400" size={32} />
             Issue History Archive
           </h1>
-          <p className="text-gray-200 mt-2 font-medium drop-shadow-md bg-black/20 p-1.5 px-3 rounded-lg inline-block backdrop-blur-sm border border-white/5">Complete ledger of all library transactions.</p>
+          <p className="text-slate-300 mt-2 font-medium bg-slate-800/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-slate-700/50">Complete ledger of all library transactions.</p>
         </div>
 
         <div className="flex items-center gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
               type="text"
               placeholder="Search title, name, ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-dark-800/50 border border-dark-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors shadow-sm"
             />
           </div>
           
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="pl-10 pr-8 py-2.5 bg-dark-800/50 border border-dark-600 rounded-xl text-white appearance-none focus:outline-none focus:border-primary-500 transition-colors"
+              className="pl-10 pr-8 py-2.5 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-100 appearance-none focus:outline-none focus:border-teal-500 transition-colors shadow-sm"
             >
               <option value="all">All Status</option>
               <option value="issued">Issued</option>
@@ -93,11 +88,11 @@ const IssueHistory = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-dark-800/40 backdrop-blur-md border border-dark-700/50 rounded-2xl overflow-hidden flex flex-col">
+      <div className="flex-1 bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl overflow-hidden flex flex-col shadow-sm">
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-dark-700/50 bg-dark-900/50 text-gray-400 text-sm font-medium">
+              <tr className="border-b border-slate-700/50 bg-slate-900/50 text-slate-400 text-sm font-bold tracking-wider">
                 <th className="px-6 py-4">ID</th>
                 <th className="px-6 py-4">Book Title</th>
                 <th className="px-6 py-4">Student Name</th>
@@ -108,7 +103,7 @@ const IssueHistory = () => {
                 <th className="px-6 py-4">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-dark-700/50">
+            <tbody className="divide-y divide-slate-700/50">
               {loading ? (
                 <tr>
                   <td colSpan="8" className="px-6 py-12 text-center text-gray-400">
@@ -130,20 +125,20 @@ const IssueHistory = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                     key={item.issue_id} 
-                    className="hover:bg-dark-700/30 transition-colors group"
+                    className="hover:bg-slate-700/30 transition-colors group"
                   >
-                    <td className="px-6 py-4 text-gray-400 font-mono">#{item.issue_id}</td>
-                    <td className="px-6 py-4 font-medium text-gray-200 group-hover:text-primary-400 transition-colors">
+                    <td className="px-6 py-4 text-slate-400 font-mono">#{item.issue_id}</td>
+                    <td className="px-6 py-4 font-medium text-slate-200 group-hover:text-teal-400 transition-colors">
                       {item.book_title}
                     </td>
-                    <td className="px-6 py-4 text-gray-300">{item.student_name}</td>
-                    <td className="px-6 py-4 text-gray-400 text-sm">
+                    <td className="px-6 py-4 text-slate-300">{item.student_name}</td>
+                    <td className="px-6 py-4 text-slate-400 text-sm">
                       {new Date(item.issue_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-gray-400 text-sm">
+                    <td className="px-6 py-4 text-slate-400 text-sm">
                       {new Date(item.due_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-gray-400 text-sm">
+                    <td className="px-6 py-4 text-slate-400 text-sm">
                       {item.return_date ? new Date(item.return_date).toLocaleDateString() : '-'}
                     </td>
                     <td className="px-6 py-4 font-medium">
@@ -165,7 +160,7 @@ const IssueHistory = () => {
           </table>
         </div>
         
-        <div className="p-4 border-t border-dark-700/50 bg-dark-900/30 backdrop-blur-sm text-sm text-gray-400 flex justify-between items-center">
+        <div className="p-4 border-t border-slate-700/50 bg-slate-900/30 backdrop-blur-sm text-sm text-slate-400 flex justify-between items-center">
           <span>Showing {filteredHistory.length} transaction(s)</span>
         </div>
       </div>

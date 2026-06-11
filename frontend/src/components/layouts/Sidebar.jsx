@@ -27,7 +27,7 @@ const Sidebar = () => {
     <div className="w-64 bg-slate-900/80 backdrop-blur-2xl flex flex-col min-h-screen relative z-20 border-r border-slate-800 shadow-2xl overflow-hidden transition-all duration-300">
       {/* Sidebar Texture - Minimal */}
       <div 
-        className="absolute inset-0 bg-cover bg-left opacity-10 pointer-events-none mix-blend-luminosity"
+        className="absolute inset-0 bg-cover bg-left opacity-[0.15] pointer-events-none mix-blend-luminosity blur-[2px]"
         style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80")' }}
       ></div>
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-950/90 pointer-events-none"></div>
@@ -75,9 +75,9 @@ const Sidebar = () => {
       <div className="p-4 mt-auto">
         <button
           onClick={logout}
-          className="flex items-center justify-center gap-3 w-full px-4 py-3 font-bold text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/20 rounded-xl transition-all duration-300 shadow-sm hover:shadow-[0_4px_14px_rgba(239,68,68,0.4)]"
+          className="flex items-center justify-center gap-3 w-full px-4 py-3 font-bold text-red-200 bg-red-900/40 hover:bg-red-800/60 border border-red-700/50 rounded-xl transition-all duration-300 shadow-sm backdrop-blur-md hover:shadow-[0_4px_14px_rgba(220,38,38,0.3)]"
         >
-          <LogOut size={20} />
+          <LogOut size={20} className="text-red-400" />
           Logout
         </button>
       </div>
