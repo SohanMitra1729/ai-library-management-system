@@ -36,19 +36,19 @@ const Register = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold text-white mb-6 text-center">Create Account</h2>
+      <h2 className="text-3xl font-black text-textPrimary mb-8 text-center tracking-tight">Create Account</h2>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded-xl mb-6 text-sm">
+        <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-[16px] mb-6 text-sm font-bold text-center">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+          <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Full Name</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-textSecondary">
               <User size={18} />
             </div>
             <input
@@ -56,16 +56,16 @@ const Register = () => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              className="block w-full pl-12 pr-4 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentBlue/50 focus:border-accentBlue/50 transition-all shadow-inner"
               placeholder="John Doe"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
+          <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Email</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-textSecondary">
               <Mail size={18} />
             </div>
             <input
@@ -73,16 +73,16 @@ const Register = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              className="block w-full pl-12 pr-4 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentBlue/50 focus:border-accentBlue/50 transition-all shadow-inner"
               placeholder="you@example.com"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-1">Password</label>
+          <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Password</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-textSecondary">
               <Lock size={18} />
             </div>
             <input
@@ -90,26 +90,26 @@ const Register = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              className="block w-full pl-12 pr-4 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentBlue/50 focus:border-accentBlue/50 transition-all shadow-inner"
               placeholder="••••••••"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-1">Role</label>
+          <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Role</label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-textSecondary">
               <Briefcase size={18} />
             </div>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none"
+              className="block w-full pl-12 pr-4 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary focus:outline-none focus:ring-2 focus:ring-accentBlue/50 focus:border-accentBlue/50 transition-all appearance-none shadow-inner custom-select"
             >
-              <option value="student">Student</option>
-              <option value="faculty">Faculty</option>
-              <option value="librarian">Librarian</option>
+              <option value="student" className="bg-bgPrimary text-textPrimary">Student</option>
+              <option value="faculty" className="bg-bgPrimary text-textPrimary">Faculty</option>
+              <option value="librarian" className="bg-bgPrimary text-textPrimary">Librarian</option>
             </select>
           </div>
         </div>
@@ -117,15 +117,15 @@ const Register = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:ring-offset-dark-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+          className="w-full flex justify-center items-center py-4 px-4 rounded-[16px] font-bold text-bgPrimary bg-accentBlue hover:bg-white hover:text-accentBlue hover:shadow-[0_0_20px_rgba(30,144,255,0.6)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accentBlue focus:ring-offset-bgPrimary transition-all duration-300 disabled:opacity-50 disabled:hover:bg-accentBlue disabled:hover:text-bgPrimary mt-8"
         >
           {loading ? <Loader2 className="animate-spin" size={20} /> : 'Create Account'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-gray-400">
+      <p className="mt-8 text-center text-sm font-bold text-textSecondary">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-primary-400 hover:text-primary-300 transition-colors">
+        <Link to="/login" className="text-accentBlue hover:text-white transition-colors">
           Sign in
         </Link>
       </p>

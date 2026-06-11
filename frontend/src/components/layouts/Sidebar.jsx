@@ -24,20 +24,20 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-slate-900/80 backdrop-blur-2xl flex flex-col min-h-screen relative z-20 border-r border-slate-800 shadow-2xl overflow-hidden transition-all duration-300">
+    <div className="w-64 bg-cardBgGlass backdrop-blur-[18px] flex flex-col min-h-screen relative z-20 border-r border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300">
       {/* Sidebar Texture - Minimal */}
       <div 
-        className="absolute inset-0 bg-cover bg-left opacity-[0.15] pointer-events-none mix-blend-luminosity blur-[2px]"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80")' }}
+        className="absolute inset-0 bg-cover bg-center opacity-[0.5] pointer-events-none"
+        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80")' }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-950/90 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-bgSecondary/40 to-bgPrimary/70 pointer-events-none"></div>
       
       <div className="p-8 flex items-center gap-3 relative z-10">
-        <div className="p-2 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl shadow-lg border border-teal-400/30">
+        <div className="p-2 bg-gradient-to-br from-accentCyan to-accentBlue rounded-xl shadow-[0_0_15px_rgba(0,212,200,0.5)] border border-accentCyan/30">
           <Library className="text-white drop-shadow-md" size={24} />
         </div>
         <h2 className="text-2xl font-black tracking-tight text-white drop-shadow-sm">
-          Nexus<span className="text-teal-400">Lib</span>
+          Nexus<span className="text-accentCyan">Lib</span>
         </h2>
       </div>
 
@@ -50,19 +50,19 @@ const Sidebar = () => {
               to={link.to}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden group ${isActive
-                  ? 'text-white bg-teal-500/10 font-bold border border-teal-500/20 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 font-medium'
+                  ? 'bg-accentCyan/15 text-accentCyan shadow-[inset_4px_0_0_0_rgba(0,212,200,1)] bg-gradient-to-r from-accentCyan/10 to-transparent'
+                  : 'text-textSecondary hover:bg-white/5 hover:text-textPrimary font-medium'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-teal-500 rounded-r-full shadow-[0_0_8px_rgba(20,184,166,0.8)]"></div>
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-accentCyan rounded-r-full shadow-[0_0_8px_rgba(0,212,200,0.8)]"></div>
                   )}
                   <Icon 
                     size={20} 
-                    className={`transition-all duration-300 ${isActive ? 'text-teal-400' : 'group-hover:text-slate-300'}`} 
+                    className={`transition-all duration-300 ${isActive ? 'text-accentCyan' : 'group-hover:text-textPrimary'}`} 
                   />
                   <span className="relative z-10">{link.label}</span>
                 </>

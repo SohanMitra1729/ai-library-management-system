@@ -54,38 +54,51 @@ const IssueBook = () => {
   const defaultDateString = defaultDueDate.toISOString().split('T')[0];
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Issue Book</h1>
-        <p className="text-gray-400">Issue a book to a user.</p>
+    <div className="relative min-h-[80vh] flex flex-col p-8 rounded-[32px] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-white/5 bg-bgPrimary">
+      {/* Local background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.5] blur-[2px]"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=80")' }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-bgPrimary/20 via-bgPrimary/40 to-bgPrimary/90"></div>
       </div>
 
+      <div className="relative z-10 max-w-2xl mx-auto w-full mt-4">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-black text-textPrimary mb-3 flex items-center justify-center gap-3">
+            <BookUp className="text-accentOrange" size={36} />
+            Issue Book
+          </h1>
+          <p className="text-textSecondary text-lg font-medium bg-bgSecondary/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-white/5">Issue a book to a user and track due dates.</p>
+        </div>
+
       {error && (
-        <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl mb-6">
+        <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl mb-6 backdrop-blur-md shadow-lg font-medium text-center">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-primary-500/10 border border-primary-500/50 text-primary-400 p-4 rounded-xl mb-6 flex flex-col gap-2">
-          <div className="flex items-center gap-3">
+        <div className="bg-accentOrange/10 border border-accentOrange/50 text-accentOrange p-4 rounded-xl mb-6 flex flex-col gap-2 backdrop-blur-md shadow-lg font-bold">
+          <div className="flex items-center justify-center gap-3">
             <CheckCircle2 size={20} />
             <span className="font-semibold">{success}</span>
           </div>
           {issueId && (
-            <div className="text-sm opacity-90 pl-8">
-              Issue ID: <span className="font-mono text-white bg-dark-900 px-2 py-0.5 rounded">{issueId}</span>
-              <br/>
-              (Please provide this Issue ID to the user for return)
+            <div className="text-sm opacity-90 text-center mt-2">
+              Issue ID: <span className="font-mono text-white bg-black/50 px-3 py-1 rounded-md border border-white/10 ml-2">{issueId}</span>
+              <p className="text-[11px] text-textSecondary mt-2 uppercase tracking-wide">Please provide this Issue ID to the user for return</p>
             </div>
           )}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-dark-800 border border-dark-700 rounded-2xl p-8 shadow-xl">
-        <div className="space-y-6 mb-6">
+      <form onSubmit={handleSubmit} className="bg-cardBgGlass border border-white/10 rounded-[32px] p-8 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-[18px] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accentOrange/5 rounded-full blur-[80px] pointer-events-none"></div>
+        <div className="space-y-6 mb-8 relative z-10">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">User ID *</label>
+            <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">User ID *</label>
             <input
               type="number"
               name="user_id"
@@ -93,12 +106,12 @@ const IssueBook = () => {
               min="1"
               value={formData.user_id}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+              className="w-full px-5 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentOrange/50 focus:border-accentOrange/50 transition-all shadow-inner font-mono"
               placeholder="Enter User ID"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Book ID *</label>
+            <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Book ID *</label>
             <input
               type="number"
               name="book_id"
@@ -106,12 +119,12 @@ const IssueBook = () => {
               min="1"
               value={formData.book_id}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+              className="w-full px-5 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentOrange/50 focus:border-accentOrange/50 transition-all shadow-inner font-mono"
               placeholder="Enter Book ID"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Due Date *</label>
+            <label className="block text-sm font-bold text-textSecondary uppercase tracking-wider mb-2">Due Date *</label>
             <input
               type="date"
               name="due_date"
@@ -119,30 +132,31 @@ const IssueBook = () => {
               value={formData.due_date}
               onChange={handleChange}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all [color-scheme:dark]"
+              className="w-full px-5 py-3.5 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:ring-2 focus:ring-accentOrange/50 focus:border-accentOrange/50 transition-all shadow-inner [color-scheme:dark]"
             />
-            <p className="text-xs text-gray-500 mt-1">Default is 14 days from today.</p>
+            <p className="text-xs text-textSecondary mt-2">Default is 14 days from today.</p>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-dark-700 flex justify-end">
+        <div className="pt-6 border-t border-white/10 flex items-center justify-between relative z-10">
           <button
             type="button"
-            className="mr-4 text-gray-400 hover:text-white transition-colors"
+            className="text-textSecondary hover:text-accentOrange transition-colors font-bold text-sm"
             onClick={() => setFormData(prev => ({ ...prev, due_date: defaultDateString }))}
           >
-            Set Default Date
+            Reset Default Date
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:ring-offset-dark-800 transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-bgPrimary bg-accentOrange hover:bg-white hover:text-accentOrange hover:shadow-[0_0_20px_rgba(245,158,11,0.6)] focus:ring-2 focus:ring-offset-2 focus:ring-accentOrange focus:ring-offset-bgPrimary transition-all duration-300 disabled:opacity-50 disabled:hover:bg-accentOrange disabled:hover:text-bgPrimary disabled:hover:shadow-none"
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : <BookUp size={20} />}
             Issue Book
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 };

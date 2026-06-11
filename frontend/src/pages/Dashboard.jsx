@@ -8,15 +8,17 @@ const StatCard = ({ title, value, icon: Icon, color, delay }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay, duration: 0.5 }}
-    className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 group"
+    className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 hover:border-white/20 transition-all duration-300 group relative overflow-hidden"
   >
-    <div className="flex items-center justify-between">
+    {/* Subtle glow inside card */}
+    <div className={`absolute top-0 right-0 w-32 h-32 ${color.split(' ')[0].replace('bg-', 'bg-')}/20 rounded-full blur-[40px] pointer-events-none transition-opacity duration-300 opacity-50 group-hover:opacity-100`}></div>
+    
+    <div className="flex items-center justify-between relative z-10">
       <div>
-        <p className="text-slate-400 text-sm font-medium mb-1">{title}</p>
-        <h3 className="text-3xl font-black text-slate-100">{value}</h3>
+        <p className="text-slate-300 text-sm font-medium mb-1 tracking-wide uppercase">{title}</p>
+        <h3 className="text-3xl font-black text-white">{value}</h3>
       </div>
-      <div className={`p-4 rounded-xl ${color} group-hover:scale-110 transition-transform duration-300`}>
+      <div className={`p-4 rounded-2xl ${color} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 border border-white/10`}>
         <Icon className="text-white" size={24} />
       </div>
     </div>
@@ -71,88 +73,102 @@ const Dashboard = () => {
       alert('Failed to export data.');
     }
   };
-
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="relative border border-slate-700/50 rounded-3xl p-10 overflow-hidden shadow-sm bg-slate-900/40 backdrop-blur-md"
-      >
-        <div className="absolute right-0 top-0 w-64 h-64 bg-teal-500/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
+    <div className="relative min-h-[80vh] rounded-[32px] overflow-hidden bg-bgPrimary border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      {/* Dashboard Library Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.5] blur-[2px]"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=80")' }}
+        ></div>
+        {/* Light Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-bgPrimary/20 via-bgPrimary/40 to-bgPrimary/90"></div>
+      </div>
+
+      <div className="relative z-10 p-8 max-w-7xl mx-auto space-y-8">
+        {/* Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative border border-white/10 rounded-[32px] p-10 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.3)] bg-cardBgGlass backdrop-blur-[18px]"
+        >
+          <div className="absolute right-0 top-0 w-96 h-96 bg-accentCyan/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
 
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">Welcome back to Nexus<span className="text-teal-400">Lib</span></h1>
-            <p className="text-slate-300 text-lg md:text-xl font-medium max-w-2xl bg-slate-900/40 p-2 rounded-lg inline-block backdrop-blur-md border border-slate-700/50">Your digital library command center. Overviewing performance, outstanding issues, and live availability.</p>
+            <h1 className="text-4xl md:text-5xl font-black text-textPrimary mb-3 tracking-tight">Welcome back to Nexus<span className="text-accentCyan">Lib</span></h1>
+            <p className="text-textSecondary text-lg md:text-xl font-medium max-w-2xl bg-bgSecondary/40 p-2 rounded-lg inline-block backdrop-blur-md border border-white/5">Your digital library command center. Overviewing performance, outstanding issues, and live availability.</p>
           </div>
           <div className="hidden md:block">
-            <div className="p-5 bg-teal-500/10 backdrop-blur-md rounded-2xl border border-teal-500/20 shadow-lg">
-              <Book className="text-teal-400 w-12 h-12" />
+            <div className="p-5 bg-accentCyan/10 backdrop-blur-md rounded-2xl border border-accentCyan/20 shadow-lg">
+              <Book className="text-accentCyan w-12 h-12" />
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Export Section */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <button onClick={() => handleExport('books')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
-          <Download size={20} className="text-teal-400" /> Export Books
-        </button>
-        <button onClick={() => handleExport('users')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
-          <Download size={20} className="text-purple-400" /> Export Users
-        </button>
-        <button onClick={() => handleExport('transactions')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
-          <Download size={20} className="text-orange-400" /> Export Transactions
-        </button>
-      </div>
+        {/* Export Section */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <button onClick={() => handleExport('books')} className="flex-1 bg-white/5 backdrop-blur-md hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-center gap-3 transition-all duration-300 text-slate-200 font-bold shadow-lg hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1">
+            <Download size={20} className="text-teal-400" /> Export Books
+          </button>
+          <button onClick={() => handleExport('users')} className="flex-1 bg-white/5 backdrop-blur-md hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-center gap-3 transition-all duration-300 text-slate-200 font-bold shadow-lg hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1">
+            <Download size={20} className="text-purple-400" /> Export Users
+          </button>
+          <button onClick={() => handleExport('transactions')} className="flex-1 bg-white/5 backdrop-blur-md hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-center gap-3 transition-all duration-300 text-slate-200 font-bold shadow-lg hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)] hover:-translate-y-1">
+            <Download size={20} className="text-orange-400" /> Export Transactions
+          </button>
+        </div>
 
       {/* Main Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-        <StatCard title="Total Books" value={stats?.total_books || 0} icon={Book} color="bg-blue-500/80 shadow-blue-500/20" delay={0.1} />
-        <StatCard title="Available Books" value={stats?.available_books || 0} icon={BookOpenCheck} color="bg-teal-500/80 shadow-teal-500/20" delay={0.2} />
-        <StatCard title="Issued Books" value={stats?.active_issues || 0} icon={BookUp} color="bg-orange-500/80 shadow-orange-500/20" delay={0.3} />
-        <StatCard title="Active Users" value={stats?.total_users || 0} icon={Users} color="bg-purple-500/80 shadow-purple-500/20" delay={0.4} />
+        <StatCard title="Total Books" value={stats?.total_books || 0} icon={Book} color="bg-accentBlue/80 shadow-accentBlue/20" delay={0.1} />
+        <StatCard title="Available Books" value={stats?.available_books || 0} icon={BookOpenCheck} color="bg-accentCyan/80 shadow-accentCyan/20" delay={0.2} />
+        <StatCard title="Issued Books" value={stats?.active_issues || 0} icon={BookUp} color="bg-accentOrange/80 shadow-accentOrange/20" delay={0.3} />
+        <StatCard title="Active Users" value={stats?.total_users || 0} icon={Users} color="bg-accentPurple/80 shadow-accentPurple/20" delay={0.4} />
         <StatCard title="Total Fines" value={`₹${stats?.total_unpaid_fines || 0}`} icon={DollarSign} color="bg-red-500/80 shadow-red-500/20" delay={0.5} />
       </div>
 
-      {/* Secondary Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-full"><Clock className="text-red-400" size={24} /></div>
-          <div>
-            <h4 className="text-2xl font-bold text-white">{stats?.overdue_books || 0}</h4>
-            <p className="text-sm font-medium text-slate-400">Overdue Books</p>
-          </div>
-        </motion.div>
-        
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
-          <div className="p-3 bg-teal-500/10 border border-teal-500/20 rounded-full"><Calendar className="text-teal-400" size={24} /></div>
-          <div>
-            <h4 className="text-2xl font-bold text-white">{stats?.returned_today || 0}</h4>
-            <p className="text-sm font-medium text-slate-400">Books Returned Today</p>
-          </div>
-        </motion.div>
+        {/* Secondary Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-24 h-24 bg-red-500/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
+            <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-full relative z-10"><Clock className="text-red-400" size={24} /></div>
+            <div className="relative z-10">
+              <h4 className="text-2xl font-bold text-textPrimary">{stats?.overdue_books || 0}</h4>
+              <p className="text-sm font-medium text-textSecondary">Overdue Books</p>
+            </div>
+          </motion.div>
+          
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-24 h-24 bg-accentCyan/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
+            <div className="p-3 bg-accentCyan/20 border border-accentCyan/30 rounded-full relative z-10"><Calendar className="text-accentCyan" size={24} /></div>
+            <div className="relative z-10">
+              <h4 className="text-2xl font-bold text-textPrimary">{stats?.returned_today || 0}</h4>
+              <p className="text-sm font-medium text-textSecondary">Books Returned Today</p>
+            </div>
+          </motion.div>
 
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
-          <div className="p-3 bg-orange-500/10 border border-orange-500/20 rounded-full"><DollarSign className="text-orange-400" size={24} /></div>
-          <div>
-            <h4 className="text-2xl font-bold text-white">₹{stats?.total_unpaid_fines || 0}</h4>
-            <p className="text-sm font-medium text-slate-400">Outstanding Fines</p>
-          </div>
-        </motion.div>
-      </div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-24 h-24 bg-accentOrange/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
+            <div className="p-3 bg-accentOrange/20 border border-accentOrange/30 rounded-full relative z-10"><DollarSign className="text-accentOrange" size={24} /></div>
+            <div className="relative z-10">
+              <h4 className="text-2xl font-bold text-textPrimary">₹{stats?.total_unpaid_fines || 0}</h4>
+              <p className="text-sm font-medium text-textSecondary">Outstanding Fines</p>
+            </div>
+          </motion.div>
+        </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        {/* Books By Category (Pie Chart) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 }}
-          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6"
-        >
-          <h3 className="text-lg font-bold text-white mb-6">Books by Category</h3>
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Books By Category (Pie Chart) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 }}
+            className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-accentCyan/5 rounded-full blur-[80px] pointer-events-none"></div>
+          <h3 className="text-lg font-bold text-textPrimary mb-6">Books by Category</h3>
           <div className="h-64 flex flex-col items-center justify-center">
             {charts.booksByCategory && charts.booksByCategory.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -175,12 +191,13 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Availability Overview (Bar Chart) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.0 }}
-          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6"
-        >
-          <h3 className="text-lg font-bold text-white mb-6">Availability Overview</h3>
+          {/* Availability Overview (Bar Chart) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.0 }}
+            className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-accentBlue/5 rounded-full blur-[80px] pointer-events-none"></div>
+          <h3 className="text-lg font-bold text-textPrimary mb-6">Availability Overview</h3>
           <div className="h-64 flex flex-col items-center justify-center">
             {stats && (stats.available_books > 0 || stats.active_issues > 0) ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -203,12 +220,13 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Monthly Borrowing Activity (Line Chart) */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
-        >
-          <h3 className="text-lg font-bold text-white mb-6">Monthly Borrowing Activity</h3>
+          {/* Monthly Borrowing Activity (Line Chart) */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
+            className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-xl lg:col-span-2 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-96 h-96 bg-accentPurple/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <h3 className="text-lg font-bold text-textPrimary mb-6">Monthly Borrowing Activity</h3>
           <div className="h-72 flex flex-col items-center justify-center">
             {charts.monthlyActivity && charts.monthlyActivity.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -230,14 +248,15 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Top 5 Most Issued Books (Bar Chart) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }}
-          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
-        >
+          {/* Top 5 Most Issued Books (Bar Chart) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }}
+            className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-xl lg:col-span-2 relative overflow-hidden"
+          >
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-accentCyan/5 rounded-full blur-[100px] pointer-events-none"></div>
           <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="text-teal-400" size={24} />
-            <h3 className="text-lg font-bold text-white">Top 5 Most Issued Books</h3>
+            <TrendingUp className="text-accentCyan" size={24} />
+            <h3 className="text-lg font-bold text-textPrimary">Top 5 Most Issued Books</h3>
           </div>
           <div className="h-72 flex flex-col items-center justify-center">
             {charts.topIssuedBooks && charts.topIssuedBooks.length > 0 ? (
@@ -259,19 +278,20 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Recent Activity */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}
-          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
-        >
+          {/* Recent Activity */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}
+            className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 shadow-xl lg:col-span-2 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-1/4 w-64 h-64 bg-accentOrange/5 rounded-full blur-[100px] pointer-events-none"></div>
           <div className="flex items-center gap-3 mb-6">
-            <Activity className="text-teal-400" size={24} />
-            <h3 className="text-lg font-bold text-white">Recent Library Activity</h3>
+            <Activity className="text-accentCyan" size={24} />
+            <h3 className="text-lg font-bold text-textPrimary">Recent Library Activity</h3>
           </div>
           <div className="space-y-4">
             {charts.recentActivity && charts.recentActivity.length > 0 ? (
               charts.recentActivity.map((act, i) => (
-                <div key={i} className="bg-slate-900/50 border border-slate-700 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:bg-slate-800/60">
+                <div key={i} className="bg-black/20 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:bg-black/40 hover:-translate-y-1 hover:shadow-lg">
                   <div className="flex items-start gap-4">
                     <div className={`p-2 rounded-lg mt-1 ${act.status === 'issued' ? 'bg-blue-500/20 text-blue-400' : act.status === 'returned' ? 'bg-teal-500/20 text-teal-400' : 'bg-red-500/20 text-red-400'}`}>
                       {act.status === 'issued' ? <BookUp size={20} /> : act.status === 'returned' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
@@ -301,6 +321,7 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
+        </div>
       </div>
     </div>
   );

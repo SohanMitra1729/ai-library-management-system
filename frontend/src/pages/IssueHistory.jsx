@@ -27,11 +27,11 @@ const IssueHistory = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'returned':
-        return <span className="px-3 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-full text-xs font-bold tracking-wide uppercase">Returned</span>;
+        return <span className="px-3 py-1 bg-accentCyan/10 text-accentCyan border border-accentCyan/20 rounded-full text-xs font-bold tracking-wide uppercase">Returned</span>;
       case 'overdue':
         return <span className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-xs font-bold tracking-wide uppercase">Overdue</span>;
       default:
-        return <span className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold tracking-wide uppercase">Issued</span>;
+        return <span className="px-3 py-1 bg-accentBlue/10 text-accentBlue border border-accentBlue/20 rounded-full text-xs font-bold tracking-wide uppercase">Issued</span>;
     }
   };
 
@@ -47,63 +47,70 @@ const IssueHistory = () => {
   });
 
   return (
-    <div className="relative max-w-7xl mx-auto h-full flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800 bg-slate-900/30 backdrop-blur-sm">
+    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-8 rounded-[32px] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-white/5 bg-bgPrimary">
       {/* Global background handles library theme */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.5] blur-[2px]"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1549675584-91f19337af3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=80")' }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-bgPrimary/20 via-bgPrimary/40 to-bgPrimary/90"></div>
+      </div>
 
       <div className="relative z-10 flex flex-col flex-1">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-100 flex items-center gap-3 tracking-tight">
-            <History className="text-teal-400" size={32} />
+          <h1 className="text-3xl font-black text-textPrimary flex items-center gap-3 tracking-tight">
+            <History className="text-accentCyan" size={32} />
             Issue History Archive
           </h1>
-          <p className="text-slate-300 mt-2 font-medium bg-slate-800/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-slate-700/50">Complete ledger of all library transactions.</p>
+          <p className="text-textSecondary mt-2 font-medium bg-bgSecondary/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-white/5">Complete ledger of all library transactions.</p>
         </div>
 
         <div className="flex items-center gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-textSecondary" size={18} />
             <input
               type="text"
               placeholder="Search title, name, ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors shadow-sm"
+              className="w-full pl-11 pr-4 py-3 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary placeholder-textSecondary/50 focus:outline-none focus:border-accentCyan/50 focus:ring-2 focus:ring-accentCyan/50 transition-colors shadow-inner"
             />
           </div>
           
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-textSecondary" size={18} />
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="pl-10 pr-8 py-2.5 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-100 appearance-none focus:outline-none focus:border-teal-500 transition-colors shadow-sm"
+              className="pl-11 pr-10 py-3 bg-bgPrimary/50 border border-white/10 rounded-[16px] text-textPrimary appearance-none focus:outline-none focus:border-accentCyan/50 focus:ring-2 focus:ring-accentCyan/50 transition-colors shadow-inner custom-select"
             >
-              <option value="all">All Status</option>
-              <option value="issued">Issued</option>
-              <option value="returned">Returned</option>
-              <option value="overdue">Overdue</option>
+              <option value="all" className="bg-bgPrimary text-textPrimary">All Status</option>
+              <option value="issued" className="bg-bgPrimary text-textPrimary">Issued</option>
+              <option value="returned" className="bg-bgPrimary text-textPrimary">Returned</option>
+              <option value="overdue" className="bg-bgPrimary text-textPrimary">Overdue</option>
             </select>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl overflow-hidden flex flex-col shadow-sm">
-        <div className="overflow-x-auto flex-1">
+      <div className="flex-1 bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] overflow-hidden flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+        <div className="overflow-x-auto flex-1 custom-scrollbar">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-700/50 bg-slate-900/50 text-slate-400 text-sm font-bold tracking-wider">
-                <th className="px-6 py-4">ID</th>
-                <th className="px-6 py-4">Book Title</th>
-                <th className="px-6 py-4">Student Name</th>
-                <th className="px-6 py-4">Issue Date</th>
-                <th className="px-6 py-4">Due Date</th>
-                <th className="px-6 py-4">Return Date</th>
-                <th className="px-6 py-4">Fine</th>
-                <th className="px-6 py-4">Status</th>
+              <tr className="border-b border-white/5 bg-bgPrimary/50 text-textSecondary text-sm font-bold tracking-wider">
+                <th className="px-6 py-5">ID</th>
+                <th className="px-6 py-5">Book Title</th>
+                <th className="px-6 py-5">Student Name</th>
+                <th className="px-6 py-5">Issue Date</th>
+                <th className="px-6 py-5">Due Date</th>
+                <th className="px-6 py-5">Return Date</th>
+                <th className="px-6 py-5">Fine</th>
+                <th className="px-6 py-5">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/50">
+            <tbody className="divide-y divide-white/5">
               {loading ? (
                 <tr>
                   <td colSpan="8" className="px-6 py-12 text-center text-gray-400">
@@ -125,32 +132,32 @@ const IssueHistory = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                     key={item.issue_id} 
-                    className="hover:bg-slate-700/30 transition-colors group"
+                    className="hover:bg-white/5 transition-colors group"
                   >
-                    <td className="px-6 py-4 text-slate-400 font-mono">#{item.issue_id}</td>
-                    <td className="px-6 py-4 font-medium text-slate-200 group-hover:text-teal-400 transition-colors">
+                    <td className="px-6 py-5 text-textSecondary font-mono">#{item.issue_id}</td>
+                    <td className="px-6 py-5 font-bold text-textPrimary group-hover:text-accentCyan transition-colors">
                       {item.book_title}
                     </td>
-                    <td className="px-6 py-4 text-slate-300">{item.student_name}</td>
-                    <td className="px-6 py-4 text-slate-400 text-sm">
+                    <td className="px-6 py-5 text-textPrimary">{item.student_name}</td>
+                    <td className="px-6 py-5 text-textSecondary text-sm">
                       {new Date(item.issue_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-slate-400 text-sm">
+                    <td className="px-6 py-5 text-textSecondary text-sm">
                       {new Date(item.due_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-slate-400 text-sm">
+                    <td className="px-6 py-5 text-textSecondary text-sm">
                       {item.return_date ? new Date(item.return_date).toLocaleDateString() : '-'}
                     </td>
-                    <td className="px-6 py-4 font-medium">
+                    <td className="px-6 py-5 font-bold">
                       {item.fine_amount > 0 ? (
                         <span className="text-red-400 flex items-center">
                           <IndianRupee size={14} />{item.fine_amount}
                         </span>
                       ) : (
-                        <span className="text-gray-500">-</span>
+                        <span className="text-textSecondary">-</span>
                       )}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-5">
                       {getStatusBadge(item.dynamic_status)}
                     </td>
                   </motion.tr>
@@ -160,7 +167,7 @@ const IssueHistory = () => {
           </table>
         </div>
         
-        <div className="p-4 border-t border-slate-700/50 bg-slate-900/30 backdrop-blur-sm text-sm text-slate-400 flex justify-between items-center">
+        <div className="p-4 border-t border-white/5 bg-bgPrimary/50 backdrop-blur-md text-sm text-textSecondary flex justify-between items-center font-bold">
           <span>Showing {filteredHistory.length} transaction(s)</span>
         </div>
       </div>
