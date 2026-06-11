@@ -11,7 +11,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+// Error & Fallback
+import ErrorBoundary from './components/ErrorBoundary';
+import NotFound from './pages/NotFound';
+
 // Main Pages
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import BooksCatalog from './pages/BooksCatalog';
 import AIRecommendations from './pages/AIRecommendations';
@@ -23,9 +28,13 @@ import IssueHistory from './pages/IssueHistory';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+          {/* Public Landing Page */}
+          <Route path="/" element={<Landing />} />
+
           {/* Public / Auth Routes */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
@@ -35,7 +44,6 @@ function App() {
           {/* Protected Routes inside Main Layout */}
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
-              <Route path="/" element={<Navigate to="/catalog" replace />} />
               <Route path="/catalog" element={<BooksCatalog />} />
               <Route path="/recommendations" element={<AIRecommendations />} />
               <Route path="/my-books" element={<MyBooks />} />
@@ -51,11 +59,14 @@ function App() {
             </Route>
           </Route>
           
+          
+          
           {/* Fallback */}
-          <Route path="*" element={<Navigate to="/catalog" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

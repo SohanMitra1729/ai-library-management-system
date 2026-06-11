@@ -17,10 +17,21 @@ const BooksCatalog = () => {
     const fetchBooks = async () => {
       try {
         const response = await api.get('/books');
-        setBooks(response.data);
+        
+        console.log('Books API Response:', response.data);
+
+        if (Array.isArray(response.data)) {
+            setBooks(response.data);
+        } else if (response.data.books && Array.isArray(response.data.books)) {
+            setBooks(response.data.books);
+        } else {
+            console.error('Invalid books response:', response.data);
+            setBooks([]);
+        }
       } catch (err) {
-        setError('Failed to load books.');
-        console.error(err);
+        console.error('Books fetch failed:', err);
+        setError('Unable to load books. Please try again.');
+        setBooks([]);
       } finally {
         setLoading(false);
       }
@@ -29,16 +40,18 @@ const BooksCatalog = () => {
     fetchBooks();
   }, []);
 
-  const filteredBooks = books.filter(book => {
+  const safeBooks = Array.isArray(books) ? books : [];
+
+  const filteredBooks = safeBooks.filter(book => {
     // Category filter
     const matchCategory = selectedCategory === 'All' || book.category === selectedCategory;
 
     // Smart search filter (title, author, category, description)
     const term = searchTerm.toLowerCase();
     const matchSearch = 
-      book.title.toLowerCase().includes(term) ||
-      book.author.toLowerCase().includes(term) ||
-      book.category.toLowerCase().includes(term) ||
+      (book.title || '').toLowerCase().includes(term) ||
+      (book.author || '').toLowerCase().includes(term) ||
+      (book.category || '').toLowerCase().includes(term) ||
       (book.description || '').toLowerCase().includes(term);
 
     return matchCategory && matchSearch;
@@ -133,7 +146,7 @@ const BooksCatalog = () => {
             <div className="w-24 h-24 bg-dark-700/50 rounded-full flex items-center justify-center mb-6 shadow-inner">
               <Book className="text-gray-500" size={48} />
             </div>
-            <h3 className="text-2xl font-bold text-gray-200 mb-2">No books found</h3>
+            <h3 className="text-2xl font-bold text-gray-200 mb-2">No books available.</h3>
             <p className="text-gray-500 text-lg max-w-md">We couldn't find any books matching "{searchTerm}". Try adjusting your search.</p>
           </motion.div>
         ) : (
