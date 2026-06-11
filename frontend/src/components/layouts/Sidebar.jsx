@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus, DollarSign } from 'lucide-react';
+import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus, DollarSign, BrainCircuit } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -9,6 +9,7 @@ const Sidebar = () => {
   const navLinks = [
     { to: '/catalog', icon: BookOpen, label: 'Books Catalog' },
     { to: '/recommendations', icon: Sparkles, label: 'AI Recommendations' },
+    { to: '/study-planner', icon: BrainCircuit, label: 'AI Study Planner' },
     ...(!isLibrarian
       ? [
           { to: '/my-books', icon: Bookmark, label: 'My Books' },

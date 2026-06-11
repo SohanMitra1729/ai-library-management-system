@@ -20,6 +20,7 @@ import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import BooksCatalog from './pages/BooksCatalog';
 import AIRecommendations from './pages/AIRecommendations';
+import StudyPlanner from './pages/StudyPlanner';
 import MyBooks from './pages/MyBooks';
 import MyReservations from './pages/MyReservations';
 import Fines from './pages/Fines';
@@ -48,6 +49,7 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/catalog" element={<BooksCatalog />} />
               <Route path="/recommendations" element={<AIRecommendations />} />
+              <Route path="/study-planner" element={<StudyPlanner />} />
               
               {/* Student Routes */}
               <Route element={<ProtectedRoute />}>
