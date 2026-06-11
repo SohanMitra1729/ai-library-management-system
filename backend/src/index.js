@@ -59,35 +59,109 @@ const PORT = process.env.PORT || 5000;
         const connection = await db.getConnection();
         const [result] = await connection.query('SELECT 1 AS test');
         console.log('✅ Database connected successfully. Test query returned:', result[0].test);
-        
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS reservations (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                user_id INT NOT NULL,
-                book_id INT NOT NULL,
-                reservation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                expiry_date DATETIME NOT NULL,
-                status ENUM('Active', 'Collected', 'Expired') DEFAULT 'Active',
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
-            )
-        `);
-        console.log('✅ Reservations table verified/created.');
 
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS fines (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                issued_book_id INT NOT NULL,
-                user_id INT NOT NULL,
-                amount DECIMAL(10, 2) NOT NULL,
-                status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
-                payment_date DATETIME DEFAULT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (issued_book_id) REFERENCES issued_books(id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        `);
-        console.log('✅ Fines table verified/created.');
+        const requiredTables = ['users', 'books', 'issued_books', 'reservations', 'fines'];
+        console.log('\n--- Database Schema Audit ---');
+
+        // Define schema creation queries in strict dependency order
+        const schemaQueries = {
+            users: `
+                CREATE TABLE IF NOT EXISTS users (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL UNIQUE,
+                    password_hash VARCHAR(255) NOT NULL,
+                    role ENUM('student', 'faculty', 'librarian') DEFAULT 'student' NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )
+            `,
+            books: `
+                CREATE TABLE IF NOT EXISTS books (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    author VARCHAR(255) NOT NULL,
+                    isbn VARCHAR(20) UNIQUE,
+                    description TEXT,
+                    category VARCHAR(100),
+                    total_copies INT NOT NULL DEFAULT 1,
+                    available_copies INT NOT NULL DEFAULT 1,
+                    ai_summary TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    CONSTRAINT chk_copies CHECK (available_copies <= total_copies)
+                )
+            `,
+            issued_books: `
+                CREATE TABLE IF NOT EXISTS issued_books (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    book_id INT NOT NULL,
+                    issue_date DATE NOT NULL,
+                    due_date DATE NOT NULL,
+                    return_date DATE NULL,
+                    status ENUM('issued', 'returned', 'overdue') DEFAULT 'issued' NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+                    CONSTRAINT chk_dates CHECK (due_date >= issue_date)
+                )
+            `,
+            reservations: `
+                CREATE TABLE IF NOT EXISTS reservations (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    user_id INT NOT NULL,
+                    book_id INT NOT NULL,
+                    reservation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    expiry_date DATETIME NOT NULL,
+                    status ENUM('Active', 'Collected', 'Expired') DEFAULT 'Active',
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+                )
+            `,
+            fines: `
+                CREATE TABLE IF NOT EXISTS fines (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    issued_book_id INT NOT NULL,
+                    user_id INT NOT NULL,
+                    amount DECIMAL(10, 2) NOT NULL,
+                    status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
+                    payment_date DATETIME DEFAULT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (issued_book_id) REFERENCES issued_books(id) ON DELETE CASCADE,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                )
+            `
+        };
+
+        // 1. Sequentially create tables
+        for (const tableName of requiredTables) {
+            try {
+                await connection.query(schemaQueries[tableName]);
+                console.log(`✅ Table '${tableName}' verified/created successfully.`);
+            } catch (err) {
+                console.error(`❌ Failed to create table '${tableName}'!`);
+                console.error(`   Reason: Failed foreign key reference or syntax error.`);
+                console.error(`   Exact Error: ${err.message}`);
+            }
+        }
+
+        // 2. Audit existing tables
+        const [tables] = await connection.query('SHOW TABLES');
+        const dbNameKey = Object.keys(tables[0] || {})[0];
+        const existingTables = tables.map(row => row[dbNameKey]);
+
+        console.log('\n--- Final Schema Results ---');
+        console.log(`📊 Tables found in database: [ ${existingTables.join(', ')} ]`);
+
+        const missingTables = requiredTables.filter(t => !existingTables.includes(t));
+        if (missingTables.length > 0) {
+            console.error(`⚠️ Missing tables: [ ${missingTables.join(', ')} ]`);
+        } else {
+            console.log('✅ All required tables are present in the database!');
+        }
+        console.log('----------------------------\n');
 
         connection.release();
     } catch (error) {

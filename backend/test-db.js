@@ -1,34 +1,34 @@
+require('dotenv').config();
 const mysql = require('mysql2/promise');
-const dotenv = require('dotenv');
 
-dotenv.config();
+async function testConnection() {
+    console.log('--- MySQL Connection Test ---');
+    console.log('Host:', process.env.DB_HOST || 'localhost');
+    console.log('User:', process.env.DB_USER || 'root');
+    console.log('Database:', process.env.DB_NAME || 'ai_library');
+    console.log('Password Length:', process.env.DB_PASSWORD ? process.env.DB_PASSWORD.length : 0);
+    console.log('Port:', process.env.DB_PORT || 3306);
+    console.log('-----------------------------');
 
-(async () => {
     try {
-        const pool = mysql.createPool({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            port: process.env.DB_PORT,
-            waitForConnections: true,
-            connectionLimit: 1,
-            queueLimit: 0
+        const connection = await mysql.createConnection({
+            host: process.env.DB_HOST || 'localhost',
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || 'root',
+            database: process.env.DB_NAME || 'ai_library',
+            port: process.env.DB_PORT || 3306
         });
-
-        const [result] = await pool.query('SELECT 1 AS test');
-        console.log('✅ Database connected successfully. Test query returned:', result[0].test);
         
-        // Also verify access to all tables
-        const [books] = await pool.query('SELECT COUNT(*) as c FROM books');
-        const [users] = await pool.query('SELECT COUNT(*) as c FROM users');
-        const [issued] = await pool.query('SELECT COUNT(*) as c FROM issued_books');
-        const [fines] = await pool.query('SELECT COUNT(*) as c FROM fines');
+        console.log('✅ Connection SUCCESSFUL!');
+        const [rows] = await connection.execute('SELECT VERSION() as version');
+        console.log('MySQL Version:', rows[0].version);
         
-        console.log(`✅ Accessed tables successfully. Counts - Books: ${books[0].c}, Users: ${users[0].c}, Issued: ${issued[0].c}, Fines: ${fines[0].c}`);
-        process.exit(0);
+        await connection.end();
     } catch (error) {
-        console.error('❌ Database connection failed with exact error:', error.message);
-        process.exit(1);
+        console.log('❌ Connection FAILED!');
+        console.error('Error Code:', error.code);
+        console.error('Error Message:', error.message);
     }
-})();
+}
+
+testConnection();

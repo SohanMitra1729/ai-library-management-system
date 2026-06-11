@@ -43,20 +43,30 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    console.log("Login request:", req.body);
+    console.log("\n--- [DEBUG] Login Request Started ---");
+    console.log("Email received:", req.body.email);
     const { email, password } = req.body;
 
     try {
+        console.log(`Executing SQL: SELECT * FROM users WHERE email = '${email}'`);
         const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
         
         if (users.length === 0) {
+            console.log("❌ Reason: User not found in database for email:", email);
+            console.log("---------------------------------------\n");
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         const user = users[0];
+        console.log("✅ User found in database:", user.email);
+        console.log("Password Hash from DB:", user.password_hash ? "[EXISTS]" : "[MISSING]");
+        
         const isMatch = await bcrypt.compare(password, user.password_hash);
+        console.log("Password comparison (bcrypt.compare) result:", isMatch);
 
         if (isMatch) {
+            console.log("✅ Login successful for:", user.email);
+            console.log("---------------------------------------\n");
             res.json({
                 id: user.id,
                 name: user.name,
@@ -65,6 +75,8 @@ const loginUser = async (req, res) => {
                 token: generateToken(user.id, user.role),
             });
         } else {
+            console.log("❌ Reason: Password mismatch (bcrypt.compare returned false)");
+            console.log("---------------------------------------\n");
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
