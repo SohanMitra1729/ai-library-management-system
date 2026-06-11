@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus } from 'lucide-react';
+import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus, DollarSign } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -12,7 +12,8 @@ const Sidebar = () => {
     ...(!isLibrarian
       ? [
           { to: '/my-books', icon: Bookmark, label: 'My Books' },
-          { to: '/my-reservations', icon: BookmarkPlus, label: 'My Reservations' }
+          { to: '/my-reservations', icon: BookmarkPlus, label: 'My Reservations' },
+          { to: '/my-fines', icon: DollarSign, label: 'My Fines' }
         ]
       : []),
     ...(isLibrarian
@@ -22,6 +23,7 @@ const Sidebar = () => {
         { to: '/issue-book', icon: BookUp, label: 'Issue Book' },
         { to: '/return-book', icon: BookDown, label: 'Return Book' },
         { to: '/issue-history', icon: History, label: 'Issue History' },
+        { to: '/fines', icon: DollarSign, label: 'Fines' },
       ]
       : []),
   ];

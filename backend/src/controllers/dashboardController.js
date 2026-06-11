@@ -11,7 +11,9 @@ const getDashboardStats = async (req, res) => {
             [overdueBooks],
             [returnedToday],
             [unpaidFines],
-            [dynamicFines]
+            [dynamicFines],
+            [totalFinesDB],
+            [paidFines]
         ] = await Promise.all([
             connection.query("SELECT COUNT(*) as total FROM books"),
             connection.query("SELECT COUNT(*) as total FROM users"),
@@ -20,7 +22,9 @@ const getDashboardStats = async (req, res) => {
             connection.query("SELECT COUNT(*) as overdue FROM issued_books WHERE status = 'issued' AND due_date < CURDATE()"),
             connection.query("SELECT COUNT(*) as returned FROM issued_books WHERE status = 'returned' AND return_date = CURDATE()"),
             connection.query("SELECT SUM(amount) as total FROM fines WHERE status = 'unpaid'"),
-            connection.query("SELECT SUM(DATEDIFF(CURDATE(), due_date) * 50) as dynamic_total FROM issued_books WHERE status = 'issued' AND due_date < CURDATE()")
+            connection.query("SELECT SUM(DATEDIFF(CURDATE(), due_date) * 50) as dynamic_total FROM issued_books WHERE status = 'issued' AND due_date < CURDATE()"),
+            connection.query("SELECT SUM(amount) as total FROM fines"),
+            connection.query("SELECT SUM(amount) as total FROM fines WHERE status = 'paid'")
         ]);
 
         console.log('[Dashboard Stats] Query Results:');
@@ -34,7 +38,10 @@ const getDashboardStats = async (req, res) => {
 
         const totalUnpaid = parseFloat(unpaidFines[0]?.total || 0);
         const dynamicUnpaid = parseFloat(dynamicFines[0]?.dynamic_total || 0);
-        const grandTotalFines = totalUnpaid + dynamicUnpaid;
+        const grandTotalPendingFines = totalUnpaid + dynamicUnpaid;
+        
+        const collectedFines = parseFloat(paidFines[0]?.total || 0);
+        const totalFines = parseFloat(totalFinesDB[0]?.total || 0) + dynamicUnpaid;
 
         const responseJson = {
             total_books: totalBooks[0]?.total || 0,
@@ -43,7 +50,9 @@ const getDashboardStats = async (req, res) => {
             total_users: totalUsers[0]?.total || 0,
             overdue_books: overdueBooks[0]?.overdue || 0,
             returned_today: returnedToday[0]?.returned || 0,
-            total_unpaid_fines: grandTotalFines
+            total_unpaid_fines: grandTotalPendingFines,
+            collected_fines: collectedFines,
+            total_fines: totalFines
         };
 
         console.log('[Dashboard Stats] Response JSON:', responseJson);

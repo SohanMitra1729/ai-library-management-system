@@ -31,6 +31,7 @@ const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const issueRoutes = require('./routes/issueRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
+const fineRoutes = require('./routes/fineRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const studentRoutes = require('./routes/studentRoutes');
@@ -40,6 +41,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/issue', issueRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/fines', fineRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/student', studentRoutes);
@@ -71,6 +73,21 @@ const PORT = process.env.PORT || 5000;
             )
         `);
         console.log('✅ Reservations table verified/created.');
+
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS fines (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                issued_book_id INT NOT NULL,
+                user_id INT NOT NULL,
+                amount DECIMAL(10, 2) NOT NULL,
+                status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
+                payment_date DATETIME DEFAULT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (issued_book_id) REFERENCES issued_books(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        `);
+        console.log('✅ Fines table verified/created.');
 
         connection.release();
     } catch (error) {

@@ -22,6 +22,7 @@ import BooksCatalog from './pages/BooksCatalog';
 import AIRecommendations from './pages/AIRecommendations';
 import MyBooks from './pages/MyBooks';
 import MyReservations from './pages/MyReservations';
+import Fines from './pages/Fines';
 import AddBook from './pages/AddBook';
 import IssueBook from './pages/IssueBook';
 import ReturnBook from './pages/ReturnBook';
@@ -49,8 +50,11 @@ function App() {
               <Route path="/recommendations" element={<AIRecommendations />} />
               
               {/* Student Routes */}
-              <Route path="/my-books" element={<MyBooks />} />
-              <Route path="/my-reservations" element={<MyReservations />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/my-books" element={<MyBooks />} />
+                <Route path="/my-reservations" element={<MyReservations />} />
+                <Route path="/my-fines" element={<Fines />} />
+              </Route>
               
               {/* Librarian Only Routes */}
               <Route element={<ProtectedRoute requireLibrarian={true} />}>
@@ -59,6 +63,7 @@ function App() {
                 <Route path="/issue-book" element={<IssueBook />} />
                 <Route path="/return-book" element={<ReturnBook />} />
                 <Route path="/issue-history" element={<IssueHistory />} />
+                <Route path="/fines" element={<Fines />} />
               </Route>
             </Route>
           </Route>

@@ -128,11 +128,11 @@ const Dashboard = () => {
         <StatCard title="Issued" value={stats?.active_issues || 0} icon={BookUp} color="bg-accentOrange/80 shadow-accentOrange/20" delay={0.3} />
         <StatCard title="Reservations" value={stats?.active_reservations || 0} icon={Bookmark} color="bg-accentPurple/80 shadow-accentPurple/20" delay={0.35} />
         <StatCard title="Active Users" value={stats?.total_users || 0} icon={Users} color="bg-accentPurple/80 shadow-accentPurple/20" delay={0.4} />
-        <StatCard title="Total Fines" value={`₹${stats?.total_unpaid_fines || 0}`} icon={DollarSign} color="bg-red-500/80 shadow-red-500/20" delay={0.5} />
+        <StatCard title="Pending Fines" value={`₹${stats?.total_unpaid_fines || 0}`} icon={DollarSign} color="bg-red-500/80 shadow-red-500/20" delay={0.5} />
       </div>
 
         {/* Secondary Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
             <div className="absolute top-0 left-0 w-24 h-24 bg-red-500/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
             <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-full relative z-10"><Clock className="text-red-400" size={24} /></div>
@@ -152,11 +152,20 @@ const Dashboard = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-24 h-24 bg-accentOrange/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
-            <div className="p-3 bg-accentOrange/20 border border-accentOrange/30 rounded-full relative z-10"><DollarSign className="text-accentOrange" size={24} /></div>
+            <div className="absolute top-0 left-0 w-24 h-24 bg-green-500/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
+            <div className="p-3 bg-green-500/20 border border-green-500/30 rounded-full relative z-10"><DollarSign className="text-green-400" size={24} /></div>
             <div className="relative z-10">
-              <h4 className="text-2xl font-bold text-textPrimary">₹{stats?.total_unpaid_fines || 0}</h4>
-              <p className="text-sm font-medium text-textSecondary">Outstanding Fines</p>
+              <h4 className="text-2xl font-bold text-textPrimary">₹{stats?.collected_fines || 0}</h4>
+              <p className="text-sm font-medium text-textSecondary">Collected Fines</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9 }} className="bg-cardBgGlass backdrop-blur-[18px] border border-white/10 rounded-[24px] p-6 flex items-center gap-4 hover:bg-white/5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-24 h-24 bg-accentBlue/10 rounded-full blur-[30px] group-hover:opacity-100 opacity-50 transition-opacity"></div>
+            <div className="p-3 bg-accentBlue/20 border border-accentBlue/30 rounded-full relative z-10"><DollarSign className="text-accentBlue" size={24} /></div>
+            <div className="relative z-10">
+              <h4 className="text-2xl font-bold text-textPrimary">₹{stats?.total_fines || 0}</h4>
+              <p className="text-sm font-medium text-textSecondary">Total Fines Generated</p>
             </div>
           </motion.div>
         </div>
