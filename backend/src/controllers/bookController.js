@@ -60,4 +60,21 @@ const deleteBook = async (req, res) => {
     }
 };
 
-module.exports = { getAllBooks, addBook, updateBook, deleteBook };
+const searchBooks = async (req, res) => {
+    const { query } = req.query;
+    if (!query) return res.json([]);
+    
+    try {
+        const searchTerm = `%${query}%`;
+        const [books] = await db.query(
+            'SELECT id, title, author, isbn, available_copies FROM books WHERE title LIKE ? OR author LIKE ? OR isbn LIKE ? LIMIT 10',
+            [searchTerm, searchTerm, searchTerm]
+        );
+        res.json(books);
+    } catch (error) {
+        console.error('Error searching books:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = { getAllBooks, addBook, updateBook, deleteBook, searchBooks };

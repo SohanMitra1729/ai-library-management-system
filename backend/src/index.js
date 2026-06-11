@@ -117,7 +117,7 @@ const PORT = process.env.PORT || 5000;
                     book_id INT NOT NULL,
                     reservation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
                     expiry_date DATETIME NOT NULL,
-                    status ENUM('Active', 'Collected', 'Expired') DEFAULT 'Active',
+                    status ENUM('Active', 'Collected', 'Expired', 'Cancelled') DEFAULT 'Active',
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                     FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
                 )

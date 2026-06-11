@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus, DollarSign, BrainCircuit } from 'lucide-react';
+import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, Sparkles, History, Library, Bookmark, BookmarkPlus, DollarSign, BrainCircuit } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
-  const { isLibrarian, logout } = useAuth();
+  const { isLibrarian } = useAuth();
 
   const navLinks = [
     { to: '/catalog', icon: BookOpen, label: 'Books Catalog' },
@@ -20,6 +20,7 @@ const Sidebar = () => {
     ...(isLibrarian
       ? [
         { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { to: '/manage-reservations', icon: Bookmark, label: 'Manage Reservations' },
         { to: '/add-book', icon: PlusCircle, label: 'Add Book' },
         { to: '/issue-book', icon: BookUp, label: 'Issue Book' },
         { to: '/return-book', icon: BookDown, label: 'Return Book' },
@@ -78,15 +79,6 @@ const Sidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <button
-          onClick={logout}
-          className="flex items-center justify-center gap-3 w-full px-4 py-3 font-bold text-red-200 bg-red-900/40 hover:bg-red-800/60 border border-red-700/50 rounded-xl transition-all duration-300 shadow-sm backdrop-blur-md hover:shadow-[0_4px_14px_rgba(220,38,38,0.3)]"
-        >
-          <LogOut size={20} className="text-red-400" />
-          Logout
-        </button>
-      </div>
     </div>
   );
 };

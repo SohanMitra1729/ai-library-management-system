@@ -24,6 +24,7 @@ import StudyPlanner from './pages/StudyPlanner';
 import MyBooks from './pages/MyBooks';
 import MyReservations from './pages/MyReservations';
 import Fines from './pages/Fines';
+import ManageReservations from './pages/ManageReservations';
 import AddBook from './pages/AddBook';
 import IssueBook from './pages/IssueBook';
 import ReturnBook from './pages/ReturnBook';
@@ -61,6 +62,7 @@ function App() {
               {/* Librarian Only Routes */}
               <Route element={<ProtectedRoute requireLibrarian={true} />}>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/manage-reservations" element={<ManageReservations />} />
                 <Route path="/add-book" element={<AddBook />} />
                 <Route path="/issue-book" element={<IssueBook />} />
                 <Route path="/return-book" element={<ReturnBook />} />
