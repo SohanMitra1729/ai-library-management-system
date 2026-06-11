@@ -1,6 +1,7 @@
 const db = require('../config/db');
 
 const getAllBooks = async (req, res) => {
+    console.log("Books requested");
     try {
         const [books] = await db.query('SELECT * FROM books ORDER BY created_at DESC');
         res.json(books);

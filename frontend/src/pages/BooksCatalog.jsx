@@ -40,7 +40,9 @@ const BooksCatalog = () => {
     fetchBooks();
   }, []);
 
-  const safeBooks = Array.isArray(books) ? books : [];
+  const safeBooks = Array.isArray(books) 
+    ? books 
+    : books?.books || [];
 
   const filteredBooks = safeBooks.filter(book => {
     // Category filter

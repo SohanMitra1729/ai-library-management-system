@@ -9,6 +9,7 @@ const generateToken = (id, role) => {
 };
 
 const registerUser = async (req, res) => {
+    console.log("Register request:", req.body);
     const { name, email, password, role } = req.body;
 
     try {
@@ -42,6 +43,7 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+    console.log("Login request:", req.body);
     const { email, password } = req.body;
 
     try {

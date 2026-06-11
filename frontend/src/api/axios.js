@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance with base URL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + '/api',
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,7 +24,11 @@ api.interceptors.request.use(
 
 // Add a response interceptor to handle common errors like 401 Unauthorized
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log("API URL:", response.config.baseURL + response.config.url);
+    console.log("Response:", response.data);
+    return response;
+  },
   (error) => {
     if (error.response && error.response.status === 401) {
       // Clear local storage and redirect to login if token is expired/invalid

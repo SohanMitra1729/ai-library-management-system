@@ -27,7 +27,8 @@ const Register = () => {
         navigate('/catalog');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      console.error("Registration failed:", err.response?.data || err.message);
+      setError(err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to register');
     } finally {
       setLoading(false);
     }

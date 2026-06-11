@@ -25,7 +25,8 @@ const Login = () => {
         navigate('/catalog');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login');
+      console.error("Login failed:", err.response?.data || err.message);
+      setError(err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to login');
     } finally {
       setLoading(false);
     }
