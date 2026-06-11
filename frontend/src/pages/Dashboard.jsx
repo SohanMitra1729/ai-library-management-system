@@ -9,12 +9,12 @@ const StatCard = ({ title, value, icon: Icon, color, delay }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, duration: 0.5 }}
-    className="bg-dark-800/50 backdrop-blur-md border border-dark-700/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 group"
+    className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 group"
   >
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-gray-400 text-sm font-medium mb-1">{title}</p>
-        <h3 className="text-3xl font-black text-white">{value}</h3>
+        <p className="text-slate-400 text-sm font-medium mb-1">{title}</p>
+        <h3 className="text-3xl font-black text-slate-100">{value}</h3>
       </div>
       <div className={`p-4 rounded-xl ${color} group-hover:scale-110 transition-transform duration-300`}>
         <Icon className="text-white" size={24} />
@@ -78,27 +78,24 @@ const Dashboard = () => {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative border border-primary-500/30 rounded-3xl p-10 overflow-hidden shadow-2xl"
+        className="relative border border-slate-700/50 rounded-3xl p-10 overflow-hidden shadow-sm"
       >
-        {/* Background Image with Overlays */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
         ></div>
-        {/* Reduced dark overlay from 80% to 40% */}
-        <div className="absolute inset-0 bg-[#050810]/40 backdrop-blur-[2px]"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/70 to-transparent"></div>
-        <div className="absolute right-0 top-0 w-64 h-64 bg-primary-500/40 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
+        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40"></div>
+        <div className="absolute right-0 top-0 w-64 h-64 bg-teal-500/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
 
-        {/* Content */}
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight drop-shadow-lg">Welcome back to Nexus<span className="text-primary-400">Lib</span></h1>
-            <p className="text-gray-100 text-lg md:text-xl font-medium max-w-2xl drop-shadow-md bg-black/20 p-2 rounded-lg inline-block backdrop-blur-sm">Your digital library command center. Overviewing performance, outstanding issues, and live availability.</p>
+            <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">Welcome back to Nexus<span className="text-teal-400">Lib</span></h1>
+            <p className="text-slate-300 text-lg md:text-xl font-medium max-w-2xl bg-slate-900/40 p-2 rounded-lg inline-block backdrop-blur-md border border-slate-700/50">Your digital library command center. Overviewing performance, outstanding issues, and live availability.</p>
           </div>
           <div className="hidden md:block">
-            <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
-              <Book className="text-white w-16 h-16 drop-shadow-lg" />
+            <div className="p-5 bg-teal-500/10 backdrop-blur-md rounded-2xl border border-teal-500/20 shadow-lg">
+              <Book className="text-teal-400 w-12 h-12" />
             </div>
           </div>
         </div>
@@ -106,14 +103,14 @@ const Dashboard = () => {
 
       {/* Export Section */}
       <div className="flex flex-col md:flex-row gap-4">
-        <button onClick={() => handleExport('books')} className="flex-1 bg-dark-800/50 hover:bg-dark-700 border border-dark-600 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-white font-medium shadow-lg hover:shadow-primary-500/10">
-          <Download size={20} className="text-primary-400" /> Export Books CSV
+        <button onClick={() => handleExport('books')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
+          <Download size={20} className="text-teal-400" /> Export Books
         </button>
-        <button onClick={() => handleExport('users')} className="flex-1 bg-dark-800/50 hover:bg-dark-700 border border-dark-600 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-white font-medium shadow-lg hover:shadow-purple-500/10">
-          <Download size={20} className="text-purple-400" /> Export Users CSV
+        <button onClick={() => handleExport('users')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
+          <Download size={20} className="text-purple-400" /> Export Users
         </button>
-        <button onClick={() => handleExport('transactions')} className="flex-1 bg-dark-800/50 hover:bg-dark-700 border border-dark-600 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-white font-medium shadow-lg hover:shadow-orange-500/10">
-          <Download size={20} className="text-orange-400" /> Export Transactions CSV
+        <button onClick={() => handleExport('transactions')} className="flex-1 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors text-slate-200 font-bold shadow-sm hover:shadow-md">
+          <Download size={20} className="text-orange-400" /> Export Transactions
         </button>
       </div>
 
@@ -128,27 +125,27 @@ const Dashboard = () => {
 
       {/* Secondary Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="bg-dark-800/40 border border-dark-700/50 rounded-2xl p-6 flex items-center gap-4">
-          <div className="p-3 bg-red-500/10 rounded-full"><Clock className="text-red-400" size={24} /></div>
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-full"><Clock className="text-red-400" size={24} /></div>
           <div>
             <h4 className="text-2xl font-bold text-white">{stats?.overdue_books || 0}</h4>
-            <p className="text-sm text-gray-400">Overdue Books</p>
+            <p className="text-sm font-medium text-slate-400">Overdue Books</p>
           </div>
         </motion.div>
         
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="bg-dark-800/40 border border-dark-700/50 rounded-2xl p-6 flex items-center gap-4">
-          <div className="p-3 bg-teal-500/10 rounded-full"><Calendar className="text-teal-400" size={24} /></div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
+          <div className="p-3 bg-teal-500/10 border border-teal-500/20 rounded-full"><Calendar className="text-teal-400" size={24} /></div>
           <div>
             <h4 className="text-2xl font-bold text-white">{stats?.returned_today || 0}</h4>
-            <p className="text-sm text-gray-400">Books Returned Today</p>
+            <p className="text-sm font-medium text-slate-400">Books Returned Today</p>
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="bg-dark-800/40 border border-dark-700/50 rounded-2xl p-6 flex items-center gap-4">
-          <div className="p-3 bg-orange-500/10 rounded-full"><DollarSign className="text-orange-400" size={24} /></div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 flex items-center gap-4 hover:bg-slate-800/60 transition-colors">
+          <div className="p-3 bg-orange-500/10 border border-orange-500/20 rounded-full"><DollarSign className="text-orange-400" size={24} /></div>
           <div>
             <h4 className="text-2xl font-bold text-white">₹{stats?.total_unpaid_fines || 0}</h4>
-            <p className="text-sm text-gray-400">Outstanding Fines</p>
+            <p className="text-sm font-medium text-slate-400">Outstanding Fines</p>
           </div>
         </motion.div>
       </div>
@@ -159,7 +156,7 @@ const Dashboard = () => {
         {/* Books By Category (Pie Chart) */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9 }}
-          className="bg-dark-800/40 border border-dark-700/50 rounded-3xl p-6"
+          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6"
         >
           <h3 className="text-lg font-bold text-white mb-6">Books by Category</h3>
           <div className="h-64 flex flex-col items-center justify-center">
@@ -187,7 +184,7 @@ const Dashboard = () => {
         {/* Availability Overview (Bar Chart) */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.0 }}
-          className="bg-dark-800/40 border border-dark-700/50 rounded-3xl p-6"
+          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6"
         >
           <h3 className="text-lg font-bold text-white mb-6">Availability Overview</h3>
           <div className="h-64 flex flex-col items-center justify-center">
@@ -215,7 +212,7 @@ const Dashboard = () => {
         {/* Monthly Borrowing Activity (Line Chart) */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-          className="bg-dark-800/40 border border-dark-700/50 rounded-3xl p-6 lg:col-span-2"
+          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
         >
           <h3 className="text-lg font-bold text-white mb-6">Monthly Borrowing Activity</h3>
           <div className="h-72 flex flex-col items-center justify-center">
@@ -242,10 +239,10 @@ const Dashboard = () => {
         {/* Top 5 Most Issued Books (Bar Chart) */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }}
-          className="bg-dark-800/40 border border-dark-700/50 rounded-3xl p-6 lg:col-span-2"
+          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
         >
           <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="text-primary-400" size={24} />
+            <TrendingUp className="text-teal-400" size={24} />
             <h3 className="text-lg font-bold text-white">Top 5 Most Issued Books</h3>
           </div>
           <div className="h-72 flex flex-col items-center justify-center">
@@ -271,7 +268,7 @@ const Dashboard = () => {
         {/* Recent Activity */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}
-          className="bg-dark-800/40 border border-dark-700/50 rounded-3xl p-6 lg:col-span-2"
+          className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-6 lg:col-span-2"
         >
           <div className="flex items-center gap-3 mb-6">
             <Activity className="text-teal-400" size={24} />
@@ -280,7 +277,7 @@ const Dashboard = () => {
           <div className="space-y-4">
             {charts.recentActivity && charts.recentActivity.length > 0 ? (
               charts.recentActivity.map((act, i) => (
-                <div key={i} className="bg-dark-900/50 border border-dark-700 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:border-dark-600">
+                <div key={i} className="bg-slate-900/50 border border-slate-700 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:bg-slate-800/60">
                   <div className="flex items-start gap-4">
                     <div className={`p-2 rounded-lg mt-1 ${act.status === 'issued' ? 'bg-blue-500/20 text-blue-400' : act.status === 'returned' ? 'bg-teal-500/20 text-teal-400' : 'bg-red-500/20 text-red-400'}`}>
                       {act.status === 'issued' ? <BookUp size={20} /> : act.status === 'returned' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}

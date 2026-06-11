@@ -75,13 +75,13 @@ const BooksCatalog = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-2xl border border-dark-700/30">
+    <div className="relative max-w-7xl mx-auto min-h-[80vh] flex flex-col p-6 rounded-3xl overflow-hidden shadow-sm border border-slate-800">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-40 pointer-events-none mix-blend-luminosity"
+        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-10 pointer-events-none mix-blend-luminosity"
         style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")' }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050810]/80 via-[#050810]/50 to-[#050810]/90 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 pointer-events-none"></div>
 
       {/* Main Content (Needs relative z-10) */}
       <div className="relative z-10 flex flex-col flex-1">
@@ -91,11 +91,11 @@ const BooksCatalog = () => {
           className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6"
         >
         <div>
-          <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3 drop-shadow-lg">
-            <Library className="text-primary-400 drop-shadow-md" size={36} />
+          <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3 tracking-tight">
+            <Library className="text-teal-400" size={36} />
             Explore Catalog
           </h1>
-          <p className="text-gray-200 text-lg font-medium drop-shadow-md bg-black/20 p-1.5 px-3 rounded-lg inline-block backdrop-blur-sm border border-white/5 mt-2">Discover your next great read from our extensive collection.</p>
+          <p className="text-slate-300 text-lg font-medium bg-slate-800/40 p-2 px-4 rounded-xl inline-block backdrop-blur-md border border-slate-700/50 mt-2">Discover your next great read from our extensive collection.</p>
         </div>
         
         <div className="relative w-full md:w-96 group">
@@ -107,7 +107,7 @@ const BooksCatalog = () => {
             placeholder="Search titles, authors, or categories..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-12 pr-4 py-3.5 bg-dark-800/80 backdrop-blur-md border border-dark-600 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-lg"
+            className="block w-full pl-12 pr-4 py-3.5 bg-slate-800/60 backdrop-blur-md border border-slate-700 rounded-2xl text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all shadow-sm"
           />
         </div>
       </motion.div>
@@ -118,10 +118,10 @@ const BooksCatalog = () => {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`whitespace-nowrap px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-300 shadow-lg border ${
+            className={`whitespace-nowrap px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-300 border ${
               selectedCategory === cat 
-                ? 'bg-primary-500 text-white border-primary-400 shadow-primary-500/20 scale-105' 
-                : 'bg-dark-800/50 text-gray-400 border-dark-600 hover:bg-dark-700/50 hover:text-white'
+                ? 'bg-teal-500 text-white border-teal-400 shadow-[0_4px_14px_rgba(20,184,166,0.3)] scale-105' 
+                : 'bg-slate-800/40 text-slate-300 border-slate-700 hover:bg-slate-700/60 hover:text-white'
             }`}
           >
             {cat}
@@ -136,7 +136,7 @@ const BooksCatalog = () => {
             <p className="text-gray-400 font-medium">Curating your library...</p>
           </div>
         ) : error ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-red-500/10 border border-red-500/50 text-red-500 p-6 rounded-2xl text-center shadow-lg shadow-red-500/5">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-red-500/10 border border-red-500/20 text-red-400 p-6 rounded-2xl text-center shadow-sm">
             {error}
           </motion.div>
         ) : filteredBooks.length === 0 ? (
@@ -145,11 +145,11 @@ const BooksCatalog = () => {
             animate={{ opacity: 1, scale: 1 }} 
             className="absolute inset-0 flex flex-col justify-center items-center text-center py-16 bg-dark-800/30 backdrop-blur-md rounded-3xl border border-dark-700/50"
           >
-            <div className="w-24 h-24 bg-dark-700/50 rounded-full flex items-center justify-center mb-6 shadow-inner">
-              <Book className="text-gray-500" size={48} />
+            <div className="w-24 h-24 bg-slate-800/50 border border-slate-700/50 rounded-full flex items-center justify-center mb-6 shadow-sm">
+              <Book className="text-slate-400" size={48} />
             </div>
-            <h3 className="text-2xl font-bold text-gray-200 mb-2">No books available.</h3>
-            <p className="text-gray-500 text-lg max-w-md">We couldn't find any books matching "{searchTerm}". Try adjusting your search.</p>
+            <h3 className="text-2xl font-bold text-slate-200 mb-2">No books available.</h3>
+            <p className="text-slate-400 text-lg max-w-md">We couldn't find any books matching "{searchTerm}". Try adjusting your search.</p>
           </motion.div>
         ) : (
           <motion.div 
@@ -165,11 +165,11 @@ const BooksCatalog = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: index * 0.05, duration: 0.3 }}
-                  className="bg-[#0a0f1c]/70 backdrop-blur-2xl border border-dark-600/50 rounded-3xl overflow-hidden hover:border-primary-500/60 hover:shadow-[0_15px_40px_rgba(56,189,248,0.25)] hover:-translate-y-2 transition-all duration-300 group flex flex-col h-full shadow-xl cursor-pointer"
+                  className="bg-slate-800/30 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden hover:border-teal-500/40 hover:shadow-[0_15px_30px_rgba(20,184,166,0.15)] hover:-translate-y-2 transition-all duration-300 group flex flex-col h-full shadow-sm cursor-pointer"
                 >
-                  <div className="h-56 bg-gradient-to-br from-dark-900 to-dark-800 flex items-center justify-center relative overflow-hidden group-hover:from-dark-800 group-hover:to-dark-700 transition-colors">
+                  <div className="h-64 bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center relative overflow-hidden group-hover:from-slate-800 group-hover:to-slate-700 transition-colors">
                     {/* Real Book Cover Graphic */}
-                    <div className="w-36 h-48 rounded-r-lg border-l-[6px] border-dark-900 shadow-[20px_0_30px_rgba(0,0,0,0.8)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-[1.03] transition-all duration-500 relative overflow-hidden bg-dark-900">
+                    <div className="w-40 h-56 rounded-r-xl border-l-[6px] border-slate-900 shadow-[10px_10px_20px_rgba(0,0,0,0.5)] flex flex-col justify-between transform group-hover:rotate-2 group-hover:scale-[1.05] transition-all duration-500 relative overflow-hidden bg-slate-900">
                       <img 
                         src={getCoverImage(book.category)} 
                         alt={`${book.title} Cover`}
@@ -193,31 +193,31 @@ const BooksCatalog = () => {
                       )}
                     </div>
                     
-                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-lg capitalize">
+                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-slate-900/50 backdrop-blur-md border border-slate-700/50 text-slate-100 shadow-sm capitalize">
                       {book.category}
                     </div>
                   </div>
                   
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-xl font-bold text-white mb-1 line-clamp-1 group-hover:text-primary-400 transition-colors" title={book.title}>
+                  <div className="p-6 flex flex-col flex-1 bg-slate-900/20">
+                    <h3 className="text-xl font-bold text-slate-100 mb-1 line-clamp-1 group-hover:text-teal-400 transition-colors" title={book.title}>
                       {book.title}
                     </h3>
-                    <p className="text-sm font-medium text-gray-400 mb-4">{book.author}</p>
+                    <p className="text-sm font-medium text-slate-400 mb-4">{book.author}</p>
                     
-                    <p className="text-sm text-gray-500 mb-6 line-clamp-3 leading-relaxed flex-1" title={book.description}>
+                    <p className="text-sm text-slate-500 mb-6 line-clamp-3 leading-relaxed flex-1" title={book.description}>
                       {book.description || "No description available."}
                     </p>
                     
-                    <div className="flex items-center justify-between pt-4 border-t border-dark-700/50 mt-auto">
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-700/50 mt-auto">
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Copies</span>
-                        <span className="text-sm font-bold text-gray-300">
+                        <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1">Copies</span>
+                        <span className="text-sm font-bold text-slate-300">
                           <span className={book.available_copies > 0 ? 'text-teal-400' : 'text-red-400'}>{book.available_copies}</span> / {book.total_copies}
                         </span>
                       </div>
                       <div className="flex flex-col text-right">
-                        <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">ISBN</span>
-                        <span className="text-xs text-gray-400 font-mono bg-dark-900 px-2 py-1 rounded-md border border-dark-700">{book.isbn}</span>
+                        <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1">ISBN</span>
+                        <span className="text-xs text-slate-400 font-mono bg-slate-800/50 px-2 py-1 rounded-md border border-slate-700/50">{book.isbn}</span>
                       </div>
                     </div>
                   </div>
@@ -243,38 +243,38 @@ const BooksCatalog = () => {
             
             <motion.div 
               layoutId={`book-card-${selectedBook.id}`}
-              className="relative w-full max-w-4xl max-h-[90vh] bg-dark-900 border border-dark-700 shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row z-10"
+              className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-700 shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row z-10"
             >
               <button 
                 onClick={() => setSelectedBook(null)}
-                className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors backdrop-blur-md"
+                className="absolute top-4 right-4 z-20 p-2 bg-slate-800/80 hover:bg-red-500 border border-slate-700 text-white rounded-full transition-all backdrop-blur-md shadow-sm"
               >
                 <X size={24} />
               </button>
 
-              <div className="md:w-2/5 h-64 md:h-auto bg-dark-800 relative shrink-0">
+              <div className="md:w-2/5 h-64 md:h-auto bg-slate-800 relative shrink-0">
                 <img 
                   src={getCoverImage(selectedBook.category)} 
                   alt={selectedBook.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-dark-900"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-slate-900"></div>
               </div>
 
               <div className="p-8 md:p-12 flex-1 overflow-y-auto custom-scrollbar">
                 <div className="mb-6">
-                  <span className="px-3 py-1 bg-primary-500/20 text-primary-300 border border-primary-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">
+                  <span className="px-3 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">
                     {selectedBook.category}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
+                  <h2 className="text-3xl md:text-4xl font-black text-slate-100 mb-2 leading-tight">
                     {selectedBook.title}
                   </h2>
-                  <p className="text-xl text-gray-400 font-medium">by {selectedBook.author}</p>
+                  <p className="text-xl text-slate-400 font-medium">by {selectedBook.author}</p>
                 </div>
 
                 <div className="flex flex-wrap gap-4 mb-8">
-                  <div className="flex-1 min-w-[120px] bg-dark-800/50 border border-dark-700 rounded-2xl p-4">
-                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">Status</p>
+                  <div className="flex-1 min-w-[120px] bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <p className="text-xs text-slate-500 font-bold uppercase mb-1">Status</p>
                     <p className="font-bold text-lg">
                       {selectedBook.available_copies > 0 ? (
                         <span className="text-teal-400 flex items-center gap-2"><BookOpenCheck size={18}/> Available</span>
@@ -283,21 +283,21 @@ const BooksCatalog = () => {
                       )}
                     </p>
                   </div>
-                  <div className="flex-1 min-w-[120px] bg-dark-800/50 border border-dark-700 rounded-2xl p-4">
-                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">Copies</p>
-                    <p className="font-bold text-lg text-white">
-                      {selectedBook.available_copies} <span className="text-gray-500 text-sm">/ {selectedBook.total_copies}</span>
+                  <div className="flex-1 min-w-[120px] bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <p className="text-xs text-slate-500 font-bold uppercase mb-1">Copies</p>
+                    <p className="font-bold text-lg text-slate-100">
+                      {selectedBook.available_copies} <span className="text-slate-500 text-sm">/ {selectedBook.total_copies}</span>
                     </p>
                   </div>
-                  <div className="flex-1 min-w-[120px] bg-dark-800/50 border border-dark-700 rounded-2xl p-4">
-                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">ISBN</p>
-                    <p className="font-mono text-gray-300">{selectedBook.isbn}</p>
+                  <div className="flex-1 min-w-[120px] bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <p className="text-xs text-slate-500 font-bold uppercase mb-1">ISBN</p>
+                    <p className="font-mono text-slate-300">{selectedBook.isbn}</p>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-3">About this book</h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <h3 className="text-lg font-bold text-slate-100 mb-3">About this book</h3>
+                  <p className="text-slate-400 leading-relaxed">
                     {selectedBook.description || "No detailed description is available for this book at the moment. Please contact the librarian for more information."}
                   </p>
                 </div>

@@ -24,20 +24,20 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-[#050810]/30 backdrop-blur-xl flex flex-col min-h-screen relative z-20 border-r border-dark-700/50 shadow-[10px_0_30px_rgba(0,0,0,0.8)] overflow-hidden">
-      {/* Sidebar Texture */}
+    <div className="w-64 bg-slate-900/80 backdrop-blur-2xl flex flex-col min-h-screen relative z-20 border-r border-slate-800 shadow-2xl overflow-hidden transition-all duration-300">
+      {/* Sidebar Texture - Minimal */}
       <div 
-        className="absolute inset-0 bg-cover bg-left opacity-30 pointer-events-none mix-blend-luminosity"
+        className="absolute inset-0 bg-cover bg-left opacity-10 pointer-events-none mix-blend-luminosity"
         style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80")' }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050810]/40 to-[#050810]/80 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-950/90 pointer-events-none"></div>
       
       <div className="p-8 flex items-center gap-3 relative z-10">
-        <div className="p-2 bg-gradient-to-br from-primary-500 to-blue-600 rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.7)] border border-white/20">
-          <Library className="text-white drop-shadow-lg" size={24} />
+        <div className="p-2 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl shadow-lg border border-teal-400/30">
+          <Library className="text-white drop-shadow-md" size={24} />
         </div>
-        <h2 className="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 drop-shadow-md">
-          Nexus<span className="text-primary-400 drop-shadow-[0_0_10px_rgba(56,189,248,0.9)]">Lib</span>
+        <h2 className="text-2xl font-black tracking-tight text-white drop-shadow-sm">
+          Nexus<span className="text-teal-400">Lib</span>
         </h2>
       </div>
 
@@ -49,20 +49,20 @@ const Sidebar = () => {
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden group ${isActive
-                  ? 'text-white bg-white/10 font-medium shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-white/5'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden group ${isActive
+                  ? 'text-white bg-teal-500/10 font-bold border border-teal-500/20 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 font-medium'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-500 rounded-r-full shadow-[0_0_12px_rgba(56,189,248,1)]"></div>
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-teal-500 rounded-r-full shadow-[0_0_8px_rgba(20,184,166,0.8)]"></div>
                   )}
                   <Icon 
                     size={20} 
-                    className={`transition-all duration-300 ${isActive ? 'text-primary-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]' : 'group-hover:text-primary-500/70 group-hover:drop-shadow-[0_0_5px_rgba(56,189,248,0.4)]'}`} 
+                    className={`transition-all duration-300 ${isActive ? 'text-teal-400' : 'group-hover:text-slate-300'}`} 
                   />
                   <span className="relative z-10">{link.label}</span>
                 </>
@@ -75,7 +75,7 @@ const Sidebar = () => {
       <div className="p-4 mt-auto">
         <button
           onClick={logout}
-          className="flex items-center gap-3 w-full px-4 py-3 text-gray-400 hover:bg-dark-800 hover:text-red-400 rounded-xl transition-all duration-200"
+          className="flex items-center justify-center gap-3 w-full px-4 py-3 font-bold text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/20 rounded-xl transition-all duration-300 shadow-sm hover:shadow-[0_4px_14px_rgba(239,68,68,0.4)]"
         >
           <LogOut size={20} />
           Logout
