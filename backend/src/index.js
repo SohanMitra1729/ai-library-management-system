@@ -30,6 +30,7 @@ app.get('/api/test-db', async (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const issueRoutes = require('./routes/issueRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const studentRoutes = require('./routes/studentRoutes');
@@ -38,6 +39,7 @@ const db = require('./config/db');
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/issue', issueRoutes);
+app.use('/api/reservations', reservationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/student', studentRoutes);
@@ -55,6 +57,21 @@ const PORT = process.env.PORT || 5000;
         const connection = await db.getConnection();
         const [result] = await connection.query('SELECT 1 AS test');
         console.log('✅ Database connected successfully. Test query returned:', result[0].test);
+        
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS reservations (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                book_id INT NOT NULL,
+                reservation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                expiry_date DATETIME NOT NULL,
+                status ENUM('Active', 'Collected', 'Expired') DEFAULT 'Active',
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+            )
+        `);
+        console.log('✅ Reservations table verified/created.');
+
         connection.release();
     } catch (error) {
         console.error('❌ Database connection failed with the exact error:', error.message);

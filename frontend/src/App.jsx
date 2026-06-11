@@ -21,6 +21,7 @@ import Dashboard from './pages/Dashboard';
 import BooksCatalog from './pages/BooksCatalog';
 import AIRecommendations from './pages/AIRecommendations';
 import MyBooks from './pages/MyBooks';
+import MyReservations from './pages/MyReservations';
 import AddBook from './pages/AddBook';
 import IssueBook from './pages/IssueBook';
 import ReturnBook from './pages/ReturnBook';
@@ -46,7 +47,10 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/catalog" element={<BooksCatalog />} />
               <Route path="/recommendations" element={<AIRecommendations />} />
+              
+              {/* Student Routes */}
               <Route path="/my-books" element={<MyBooks />} />
+              <Route path="/my-reservations" element={<MyReservations />} />
               
               {/* Librarian Only Routes */}
               <Route element={<ProtectedRoute requireLibrarian={true} />}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Book, Users, BookUp, DollarSign, Loader2, BookOpenCheck, Calendar, Clock, Download, TrendingUp, Activity, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Book, Users, BookUp, DollarSign, Loader2, BookOpenCheck, Calendar, Clock, Download, TrendingUp, Activity, CheckCircle2, AlertCircle, Bookmark } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, LineChart, Line, CartesianGrid } from 'recharts';
 
@@ -33,11 +33,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsRes, chartsRes] = await Promise.all([
+        const [statsRes, chartsRes, resCountRes] = await Promise.all([
           api.get('/dashboard/stats'),
-          api.get('/dashboard/charts')
+          api.get('/dashboard/charts'),
+          api.get('/reservations/active-count')
         ]);
-        setStats(statsRes.data);
+        setStats({ ...statsRes.data, active_reservations: resCountRes.data.count });
         setCharts(chartsRes.data);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -121,10 +122,11 @@ const Dashboard = () => {
         </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         <StatCard title="Total Books" value={stats?.total_books || 0} icon={Book} color="bg-accentBlue/80 shadow-accentBlue/20" delay={0.1} />
-        <StatCard title="Available Books" value={stats?.available_books || 0} icon={BookOpenCheck} color="bg-accentCyan/80 shadow-accentCyan/20" delay={0.2} />
-        <StatCard title="Issued Books" value={stats?.active_issues || 0} icon={BookUp} color="bg-accentOrange/80 shadow-accentOrange/20" delay={0.3} />
+        <StatCard title="Available" value={stats?.available_books || 0} icon={BookOpenCheck} color="bg-accentCyan/80 shadow-accentCyan/20" delay={0.2} />
+        <StatCard title="Issued" value={stats?.active_issues || 0} icon={BookUp} color="bg-accentOrange/80 shadow-accentOrange/20" delay={0.3} />
+        <StatCard title="Reservations" value={stats?.active_reservations || 0} icon={Bookmark} color="bg-accentPurple/80 shadow-accentPurple/20" delay={0.35} />
         <StatCard title="Active Users" value={stats?.total_users || 0} icon={Users} color="bg-accentPurple/80 shadow-accentPurple/20" delay={0.4} />
         <StatCard title="Total Fines" value={`₹${stats?.total_unpaid_fines || 0}`} icon={DollarSign} color="bg-red-500/80 shadow-red-500/20" delay={0.5} />
       </div>

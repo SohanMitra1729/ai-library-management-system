@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Book, Search, Loader2, Library, BookOpenCheck, BookX, X } from 'lucide-react';
+import { Book, Search, Loader2, Library, BookOpenCheck, BookX, X, BookmarkPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BooksCatalog = () => {
@@ -10,8 +10,31 @@ const BooksCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedBook, setSelectedBook] = useState(null);
+  const [reservationStatus, setReservationStatus] = useState({ loading: false, error: '', success: '' });
 
   const categories = ['All', 'Artificial Intelligence', 'Machine Learning', 'Database', 'Operating Systems', 'Networking', 'Cyber Security', 'Software Engineering', 'Algorithms'];
+
+  const handleReserve = async (bookId) => {
+    setReservationStatus({ loading: true, error: '', success: '' });
+    try {
+      await api.post('/reservations/reserve', { book_id: bookId });
+      setReservationStatus({ loading: false, error: '', success: 'Book reserved successfully!' });
+      
+      // Update local state to reflect reduced available copies
+      setBooks(prevBooks => {
+          const updatedBooks = Array.isArray(prevBooks) ? prevBooks : (prevBooks.books || []);
+          return updatedBooks.map(b => 
+            b.id === bookId ? { ...b, available_copies: b.available_copies - 1 } : b
+          );
+      });
+      setSelectedBook(prev => ({ ...prev, available_copies: prev.available_copies - 1 }));
+      
+      setTimeout(() => setReservationStatus({ loading: false, error: '', success: '' }), 3000);
+    } catch (err) {
+      setReservationStatus({ loading: false, error: err.response?.data?.message || 'Failed to reserve book', success: '' });
+      setTimeout(() => setReservationStatus({ loading: false, error: '', success: '' }), 4000);
+    }
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -299,9 +322,29 @@ const BooksCatalog = () => {
 
                 <div>
                   <h3 className="text-lg font-bold text-slate-100 mb-3">About this book</h3>
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-slate-400 leading-relaxed mb-6">
                     {selectedBook.description || "No detailed description is available for this book at the moment. Please contact the librarian for more information."}
                   </p>
+                  
+                  {reservationStatus.error && (
+                    <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-xl mb-4 text-sm font-medium">
+                      {reservationStatus.error}
+                    </div>
+                  )}
+                  {reservationStatus.success && (
+                    <div className="bg-accentCyan/10 border border-accentCyan/50 text-accentCyan p-3 rounded-xl mb-4 text-sm font-bold">
+                      {reservationStatus.success}
+                    </div>
+                  )}
+                  
+                  <button
+                    onClick={() => handleReserve(selectedBook.id)}
+                    disabled={selectedBook.available_copies <= 0 || reservationStatus.loading}
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-bgPrimary bg-accentCyan hover:bg-white hover:text-accentCyan hover:shadow-[0_0_15px_rgba(0,212,200,0.5)] transition-all disabled:opacity-50 disabled:hover:bg-accentCyan disabled:hover:text-bgPrimary disabled:hover:shadow-none"
+                  >
+                    {reservationStatus.loading ? <Loader2 className="animate-spin" size={20} /> : <BookmarkPlus size={20} />}
+                    Reserve Book
+                  </button>
                 </div>
               </div>
             </motion.div>

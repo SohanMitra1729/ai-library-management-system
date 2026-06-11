@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark } from 'lucide-react';
+import { LayoutDashboard, BookOpen, PlusCircle, BookUp, BookDown, LogOut, Sparkles, History, Library, Bookmark, BookmarkPlus } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -10,7 +10,10 @@ const Sidebar = () => {
     { to: '/catalog', icon: BookOpen, label: 'Books Catalog' },
     { to: '/recommendations', icon: Sparkles, label: 'AI Recommendations' },
     ...(!isLibrarian
-      ? [{ to: '/my-books', icon: Bookmark, label: 'My Books' }]
+      ? [
+          { to: '/my-books', icon: Bookmark, label: 'My Books' },
+          { to: '/my-reservations', icon: BookmarkPlus, label: 'My Reservations' }
+        ]
       : []),
     ...(isLibrarian
       ? [
