@@ -1,8 +1,11 @@
 const db = require('../config/db');
+const fineService = require('../services/fineService');
 
 // Get all fines (Librarian)
 const getAllFines = async (req, res) => {
     try {
+        await fineService.syncOverdueFines();
+
         const query = `
             SELECT 
                 f.id, f.amount, f.status, f.payment_date, f.created_at,
@@ -27,6 +30,8 @@ const getAllFines = async (req, res) => {
 const getMyFines = async (req, res) => {
     const user_id = req.user.id;
     try {
+        await fineService.syncOverdueFines();
+
         const query = `
             SELECT 
                 f.id, f.amount, f.status, f.payment_date, f.created_at,

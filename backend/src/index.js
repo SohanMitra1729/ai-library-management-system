@@ -36,6 +36,7 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const studyPlannerRoutes = require('./routes/studyPlannerRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const db = require('./config/db');
 // Use Routes
 app.use('/api/auth', authRoutes);
@@ -47,6 +48,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/study-planner', studyPlannerRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

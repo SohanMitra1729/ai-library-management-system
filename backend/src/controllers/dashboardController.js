@@ -1,8 +1,10 @@
 const db = require('../config/db');
+const fineService = require('../services/fineService');
 
 const getDashboardStats = async (req, res) => {
     const connection = await db.getConnection();
     try {
+        await fineService.syncOverdueFines();
         const [
             [totalBooks],
             [totalUsers],
@@ -22,7 +24,6 @@ const getDashboardStats = async (req, res) => {
             connection.query("SELECT COUNT(*) as overdue FROM issued_books WHERE status = 'issued' AND due_date < CURDATE()"),
             connection.query("SELECT COUNT(*) as returned FROM issued_books WHERE status = 'returned' AND return_date = CURDATE()"),
             connection.query("SELECT SUM(amount) as total FROM fines WHERE status = 'unpaid'"),
-            connection.query("SELECT SUM(DATEDIFF(CURDATE(), due_date) * 50) as dynamic_total FROM issued_books WHERE status = 'issued' AND due_date < CURDATE()"),
             connection.query("SELECT SUM(amount) as total FROM fines"),
             connection.query("SELECT SUM(amount) as total FROM fines WHERE status = 'paid'")
         ]);
@@ -37,11 +38,10 @@ const getDashboardStats = async (req, res) => {
         console.log('Fines:', unpaidFines[0]);
 
         const totalUnpaid = parseFloat(unpaidFines[0]?.total || 0);
-        const dynamicUnpaid = parseFloat(dynamicFines[0]?.dynamic_total || 0);
-        const grandTotalPendingFines = totalUnpaid + dynamicUnpaid;
+        const grandTotalPendingFines = totalUnpaid;
         
         const collectedFines = parseFloat(paidFines[0]?.total || 0);
-        const totalFines = parseFloat(totalFinesDB[0]?.total || 0) + dynamicUnpaid;
+        const totalFines = parseFloat(totalFinesDB[0]?.total || 0);
 
         const responseJson = {
             total_books: totalBooks[0]?.total || 0,
@@ -212,10 +212,7 @@ const exportTransactions = async (req, res) => {
                 ib.due_date, 
                 ib.return_date, 
                 ib.status,
-                CASE
-                    WHEN ib.status = 'issued' AND CURDATE() > ib.due_date THEN DATEDIFF(CURDATE(), ib.due_date) * 50
-                    ELSE COALESCE((SELECT SUM(amount) FROM fines f WHERE f.issued_book_id = ib.id), 0)
-                END as fine
+                COALESCE((SELECT SUM(amount) FROM fines f WHERE f.issued_book_id = ib.id), 0) as fine
             FROM issued_books ib
             JOIN books b ON ib.book_id = b.id
             JOIN users u ON ib.user_id = u.id

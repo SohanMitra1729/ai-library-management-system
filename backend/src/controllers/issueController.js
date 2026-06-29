@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fineService = require('../services/fineService');
 
 const issueBook = async (req, res) => {
     const { user_id, book_id, due_date } = req.body;
@@ -38,6 +39,9 @@ const returnBook = async (req, res) => {
     const connection = await db.getConnection();
     
     try {
+        // Sync fines globally first so today's fine is written to the DB
+        await fineService.syncOverdueFines();
+
         await connection.beginTransaction();
 
         // 1. Get issue record
@@ -55,21 +59,10 @@ const returnBook = async (req, res) => {
         // 3. Increment book copies
         await connection.query('UPDATE books SET available_copies = available_copies + 1 WHERE id = ?', [issue.book_id]);
 
-        // 4. Calculate fine if overdue (₹50 per day)
-        let fineAmount = 0;
-        const returnDateObj = new Date(return_date);
-        const dueDateObj = new Date(issue.due_date);
-        
-        if (returnDateObj > dueDateObj) {
-            const diffTime = Math.abs(returnDateObj - dueDateObj);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            fineAmount = diffDays * 50;
-
-            await connection.query(
-                'INSERT INTO fines (issued_book_id, user_id, amount, status) VALUES (?, ?, ?, "unpaid")',
-                [issue_id, issue.user_id, fineAmount]
-            );
-        }
+        // 4. Fine was already calculated and stored by syncOverdueFines
+        // We just fetch the updated fine amount to return it in the response
+        const [fineRecs] = await connection.query('SELECT amount FROM fines WHERE issued_book_id = ?', [issue_id]);
+        const fineAmount = fineRecs.length > 0 ? fineRecs[0].amount : 0;
 
         await connection.commit();
         res.json({ message: 'Book returned successfully', fine_incurred: fineAmount });
@@ -85,6 +78,8 @@ const returnBook = async (req, res) => {
 const getIssueHistory = async (req, res) => {
     const connection = await db.getConnection();
     try {
+        await fineService.syncOverdueFines();
+
         const query = `
             SELECT 
                 ib.id as issue_id, 
@@ -93,10 +88,7 @@ const getIssueHistory = async (req, res) => {
                 ib.issue_date, 
                 ib.due_date, 
                 ib.return_date, 
-                CASE
-                    WHEN ib.status = 'issued' AND CURDATE() > ib.due_date THEN DATEDIFF(CURDATE(), ib.due_date) * 50
-                    ELSE COALESCE(SUM(f.amount), 0)
-                END as fine_amount,
+                COALESCE(SUM(f.amount), 0) as fine_amount,
                 CASE 
                     WHEN ib.status = 'issued' AND CURDATE() > ib.due_date THEN 'overdue'
                     ELSE ib.status

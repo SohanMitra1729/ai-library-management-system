@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopNav from './TopNav';
+import Chatbot from '../Chatbot';
 
 const MainLayout = () => {
   return (
@@ -18,6 +19,9 @@ const MainLayout = () => {
           </main>
         </div>
       </div>
+      
+      {/* Floating AI Assistant */}
+      <Chatbot />
     </div>
   );
 };
