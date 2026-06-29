@@ -1,8 +1,5 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const db = require('../config/db');
-
-// Ensure you have GEMINI_API_KEY in your .env file
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const aiService = require('../services/aiService');
 
 const getRecommendations = async (req, res) => {
     const { interests } = req.body;
@@ -11,41 +8,36 @@ const getRecommendations = async (req, res) => {
         return res.status(400).json({ message: 'Interests are required for recommendations.' });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
-        return res.status(500).json({ message: 'Server is missing GEMINI_API_KEY configuration.' });
-    }
-
     try {
-        const modelName = 'gemini-2.0-flash';
-        console.log(`[AI Recommendations] Initializing model: ${modelName}`);
-        const model = genAI.getGenerativeModel({ model: modelName });
+        // Fetch library books to provide as context
+        const [availableBooks] = await db.query(
+            `SELECT id, title, author, category, description, available_copies 
+             FROM books 
+             WHERE available_copies > 0`
+        );
 
-        const prompt = `
-            You are a helpful AI Librarian. A user has provided the following interests: "${interests}".
-            Please recommend 4 specific books that match their interests.
-            
-            Return ONLY a raw JSON array. Do not include markdown blocks like \`\`\`json. 
-            Each object in the array should have exactly these keys:
-            - "title" (string)
-            - "author" (string)
-            - "category" (string)
-            - "description" (string, a brief 1-2 sentence compelling summary)
-        `;
-
-        const result = await model.generateContent(prompt);
-        const responseText = result.response.text();
-
-        // Clean up response text in case the model ignored instructions and wrapped it in markdown
-        let cleanedText = responseText.trim();
-        if (cleanedText.startsWith('```json')) {
-            cleanedText = cleanedText.substring(7);
-        }
-        if (cleanedText.endsWith('```')) {
-            cleanedText = cleanedText.substring(0, cleanedText.length - 3);
+        if (availableBooks.length === 0) {
+            return res.json([
+                {
+                    title: "No books available",
+                    author: "NexusLib System",
+                    category: "System",
+                    description: "No books are currently available in the library."
+                }
+            ]);
         }
 
-        const recommendations = JSON.parse(cleanedText);
+        // Keep tokens low by mapping only necessary fields
+        const minimalBooksContext = availableBooks.map(book => ({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            category: book.category,
+            description: book.description,
+            availability: 'Available'
+        }));
 
+        const recommendations = await aiService.generateRecommendations(interests, minimalBooksContext);
         res.json(recommendations);
     } catch (error) {
         console.error('Error fetching AI recommendations:', error);
@@ -147,23 +139,17 @@ const getRecommendations = async (req, res) => {
 };
 
 const testGemini = async (req, res) => {
-    if (!process.env.GEMINI_API_KEY) {
-        console.error('[AI Test] Server is missing GEMINI_API_KEY');
-        return res.status(500).json({ message: 'Server is missing GEMINI_API_KEY configuration.' });
-    }
-
     try {
-        const modelName = 'gemini-2.0-flash';
-        console.log(`[AI Test] Initializing model: ${modelName}`);
-        const model = genAI.getGenerativeModel({ model: modelName });
-
         const prompt = "Recommend one book for learning machine learning.";
-        console.log(`[AI Test] Sending prompt: "${prompt}"`);
+        
+        // Pass dummy books for the test endpoint so the signature works
+        const dummyBooks = [
+            { id: 1, title: 'Machine Learning Basics', author: 'AI Author', category: 'ML', description: 'Intro to ML', availability: 'Available' }
+        ];
 
-        const result = await model.generateContent(prompt);
-        const responseText = result.response.text();
+        const responseText = await aiService.generateRecommendations(prompt, dummyBooks);
 
-        console.log('[AI Test] Successfully received response from Gemini.');
+        console.log('[AI Test] Successfully received response from Groq.');
 
         res.json({
             success: true,
@@ -171,10 +157,10 @@ const testGemini = async (req, res) => {
             response: responseText
         });
     } catch (error) {
-        console.error('[AI Test] Error communicating with Gemini API:', error);
+        console.error('[AI Test] Error communicating with Groq API:', error);
         res.status(500).json({
             success: false,
-            message: 'Failed to communicate with Gemini API.',
+            message: 'Failed to communicate with Groq API.',
             error: error.message
         });
     }
